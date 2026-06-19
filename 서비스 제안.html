@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TriSignal — Three Signals, One ESG Perspective</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+:root{
+  --blue:#2F4BF0; --blue2:#2733C4; --blue3:#4F86F7; --pink:#FF2D78;
+  --wash1:#F4F7FF; --wash2:#EEF1FB; --wash3:#E6EAF6; --lav:#DFE3FB;
+  --white:#fff; --ink:#161B2E; --gray1:#9AA3B5; --gray2:#5C6478;
+  --line:#E6EAF6; --frame:#7C5CFF; --muted:#8A92A6;
+  --shadow-sm:0 2px 10px rgba(22,27,46,.06);
+  --shadow:0 14px 44px rgba(22,27,46,.09);
+  --shadow-lg:0 28px 80px rgba(39,51,196,.14);
+  --r:20px; --ok:#0E9F6E; --warn:#C9810D;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Pretendard',system-ui,sans-serif;background:var(--white);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.45;overflow-x:hidden}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+body::before{content:"";position:fixed;inset:10px;border:1.5px solid var(--frame);border-radius:14px;pointer-events:none;z-index:9;opacity:.4}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.9);backdrop-filter:blur(18px) saturate(180%);border-bottom:1px solid transparent;transition:border-color .3s}
+nav.scrolled{border-color:var(--line)}
+.nav-in{max-width:1100px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;flex:0 0 auto}
+.logo-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--pink));display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:18px;height:18px}
+.logo-txt{font-size:18px;font-weight:900;letter-spacing:-.03em;color:var(--ink)}
+.logo-txt span{color:var(--blue)}
+.nav-menu{display:flex;gap:4px;background:var(--wash2);padding:5px;border-radius:13px}
+.nav-btn{border:none;background:transparent;font-family:inherit;font-weight:700;font-size:14px;color:var(--gray2);padding:9px 16px;border-radius:9px;cursor:pointer;transition:.18s;white-space:nowrap}
+.nav-btn:hover{color:var(--ink)}
+.nav-btn.on{background:var(--white);color:var(--blue);box-shadow:var(--shadow-sm)}
+
+/* ── VIEW ── */
+.view{display:none}
+.view.active{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── SERVICE INTRO ── */
+.func-strip{background:var(--wash1);border-bottom:1px solid var(--line)}
+.func-strip-in{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.func-strip-label{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.func-strip-btn{border:1px solid var(--line);background:var(--white);font-family:inherit;font-weight:700;font-size:14px;color:var(--gray2);padding:10px 20px;border-radius:11px;cursor:pointer;transition:.18s;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-sm)}
+.func-strip-btn:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px);box-shadow:var(--shadow)}
+.func-strip-btn .ficon{font-size:16px}
+
+.hero{padding:80px 0 60px;text-align:center;position:relative;background:radial-gradient(800px 420px at 50% -60px,var(--lav),transparent 70%),radial-gradient(600px 360px at 86% 30px,#FFE3EE,transparent 65%)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow-sm);padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;color:var(--gray2);margin-bottom:24px}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 4px #FFE3EE}
+h1.hero-title{font-size:clamp(32px,5.5vw,58px);font-weight:900;letter-spacing:-.04em;line-height:1.08;margin-bottom:10px}
+.hero-title .blue{color:var(--blue)}
+.hero-title .pink{color:var(--pink)}
+.hero-tagline{font-size:clamp(15px,2vw,18px);font-weight:700;color:var(--gray2);margin-bottom:10px;letter-spacing:.01em}
+.hero-sub{margin:0 auto;max-width:560px;font-size:clamp(14px,1.8vw,16px);color:var(--muted);font-weight:500;line-height:1.7}
+.hero-sub b{color:var(--ink)}
+
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--blue);text-transform:uppercase;margin-bottom:18px}
+.kicker .ln{width:28px;height:2px;background:var(--blue);border-radius:2px}
+h2.big{font-size:clamp(24px,4vw,38px);font-weight:900;letter-spacing:-.03em;line-height:1.18;margin-bottom:18px}
+h2.big .blue{color:var(--blue)} h2.big .pink{color:var(--pink)}
+.lead{font-size:clamp(14px,1.9vw,17px);color:var(--gray2);font-weight:500;line-height:1.65;max-width:640px;margin-bottom:0}
+section.block{padding:80px 0}
+.block-split{background:var(--wash1)}
+
+/* ── CASE CARDS ── */
+.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+@media(max-width:700px){.case-grid{grid-template-columns:1fr}}
+.case-card{border-radius:var(--r);padding:28px 24px;border:1px solid}
+.case-consistent{background:rgba(14,159,110,.05);border-color:rgba(14,159,110,.2)}
+.case-mismatch{background:rgba(255,45,120,.05);border-color:rgba(255,45,120,.2)}
+.case-badge{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;padding:4px 11px;border-radius:8px;margin-bottom:12px}
+.case-consistent .case-badge{background:rgba(14,159,110,.15);color:#0E9F6E}
+.case-mismatch .case-badge{background:rgba(255,45,120,.12);color:var(--pink)}
+.case-title{font-size:1.05rem;font-weight:800;margin-bottom:8px}
+.case-arrows{font-size:.88rem;color:var(--gray2);margin-bottom:10px}
+.case-desc{font-size:.85rem;color:var(--gray2);line-height:1.65}
+
+/* ── LAYER GRID ── */
+.layer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+@media(max-width:820px){.layer-grid{grid-template-columns:1fr}}
+.layer-card{background:var(--white);border-radius:var(--r);padding:28px 24px;box-shadow:var(--shadow-sm);border:1px solid var(--line);position:relative;overflow:hidden;transition:.25s}
+.layer-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.layer-card .bartop{position:absolute;top:0;left:0;right:0;height:5px}
+.lc-l1 .bartop{background:var(--blue)} .lc-l2 .bartop{background:#0E9F6E} .lc-l3 .bartop{background:var(--pink)}
+.layer-tag{display:inline-block;font-size:12px;font-weight:800;padding:5px 11px;border-radius:8px;margin-bottom:14px;letter-spacing:.02em}
+.lc-l1 .layer-tag{background:var(--lav);color:var(--blue)} .lc-l2 .layer-tag{background:#E3FBF3;color:#0E9F6E} .lc-l3 .layer-tag{background:#FFE3EE;color:var(--pink)}
+.layer-card h3{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.layer-card .lsrc{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:12px}
+.layer-card p{font-size:14px;color:var(--gray2);line-height:1.6}
+.layer-card .lmech{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:12px;color:var(--muted);font-weight:600}
+
+/* ── FILE LIST ── */
+.file-shell{background:var(--white);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+.file-shell-head{padding:16px 24px;border-bottom:1px solid var(--line);font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.file-row{display:flex;align-items:flex-start;gap:12px;padding:14px 24px;border-bottom:1px solid var(--line);font-size:.85rem;flex-wrap:wrap}
+.file-row:last-child{border-bottom:none}
+.file-tag{font-size:11px;font-weight:800;padding:3px 9px;border-radius:7px;flex-shrink:0;margin-top:1px}
+.ft1{background:var(--lav);color:var(--blue)} .ft2{background:#E3FBF3;color:#0E9F6E}
+.ft3{background:#EEE3FB;color:#7B5EA7} .ft4{background:#FFF1DC;color:var(--warn)}
+.file-name{font-family:monospace;font-weight:700;color:var(--ink);font-size:.8rem}
+.file-desc{color:var(--gray2);font-size:.82rem}
+
+/* ── FORMULA ── */
+.formula-box{background:var(--wash1);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-top:24px}
+.formula-title{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted);margin-bottom:12px;text-transform:uppercase}
+.formula-row{font-family:monospace;font-size:.88rem;color:var(--ink);margin-bottom:7px}
+.formula-row .hl-blue{color:var(--blue);font-weight:700}
+.formula-row .hl-warn{color:var(--warn);font-weight:700}
+.formula-row .hl-purple{color:#7B5EA7;font-weight:700}
+
+/* ── FINDINGS ── */
+.findings{display:flex;flex-direction:column;gap:14px;margin-top:40px}
+.finding{display:flex;gap:20px;align-items:flex-start;background:var(--white);border:1px solid var(--line);border-radius:18px;padding:24px 26px;box-shadow:var(--shadow-sm)}
+.finding .num{flex:0 0 auto;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:900;font-size:19px;color:var(--white)}
+.f1 .num{background:var(--blue)} .f2 .num{background:var(--gray1)} .f3 .num{background:var(--pink)}
+.finding h4{font-size:17px;font-weight:800;margin-bottom:7px}
+.finding p{font-size:14px;color:var(--gray2);line-height:1.6}
+.pill{display:inline-block;margin-top:10px;font-size:12px;font-weight:700;padding:4px 11px;border-radius:7px}
+.f1 .pill{background:var(--blue);color:#fff} .f2 .pill{background:var(--wash3);color:var(--gray2)} .f3 .pill{background:var(--pink);color:#fff}
+
+/* ── FOOTER CTA ── */
+.footer-cta{padding:76px 0;text-align:center;background:linear-gradient(135deg,var(--ink),#222a52);color:#fff;position:relative;overflow:hidden}
+.footer-cta::before{content:"";position:absolute;inset:0;background:radial-gradient(460px 280px at 50% -40px,rgba(255,45,120,.22),transparent 60%)}
+.footer-cta h2{position:relative;font-size:clamp(24px,4vw,38px);font-weight:900;letter-spacing:-.03em;line-height:1.2;margin-bottom:14px}
+.footer-cta p{position:relative;color:#A6AEDC;font-size:15px;font-weight:500;max-width:540px;margin:0 auto}
+.footer-tagline{position:relative;margin-top:26px;font-size:clamp(16px,2.5vw,22px);color:#FF6FA3;font-weight:700;font-family:'Gowun Batang',serif}
+footer{background:#0C1024;color:#6B7390;padding:30px 0;font-size:13px}
+.foot-in{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.foot-logo{font-weight:800;color:#AAB4C7;font-size:15px;margin-bottom:6px}
+
+/* ── DASH ── */
+.page-head{padding:48px 0 28px}
+.page-kicker{font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--blue);text-transform:uppercase;margin-bottom:10px}
+.page-title{font-size:clamp(24px,3.5vw,34px);font-weight:900;letter-spacing:-.03em;margin-bottom:8px}
+.page-sub{font-size:15px;color:var(--gray2);font-weight:500}
+.app-shell{background:var(--white);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-lg);overflow:hidden;margin-bottom:24px}
+.app-head{padding:22px 28px;border-bottom:1px solid var(--line);background:var(--wash1);display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between}
+.app-head-left{display:flex;align-items:center;gap:14px}
+.search-wrap{flex:1;min-width:220px;position:relative}
+.search-box{display:flex;gap:8px;align-items:center;background:var(--wash1);border:1px solid var(--line);border-radius:13px;padding:5px 5px 5px 16px}
+.search-box input{flex:1;border:none;outline:none;background:transparent;font-family:inherit;font-size:15px;font-weight:600;color:var(--ink);padding:11px 0}
+.search-box input::placeholder{color:var(--muted);font-weight:500}
+.search-go{border:none;cursor:pointer;background:var(--blue);color:#fff;font-family:inherit;font-weight:700;font-size:14px;padding:11px 20px;border-radius:10px;transition:.15s;white-space:nowrap}
+.search-go:hover{background:var(--blue2)}
+.dash-suggest{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--white);border:1px solid var(--line);border-radius:13px;z-index:50;max-height:240px;overflow-y:auto;display:none;box-shadow:var(--shadow)}
+.sug-item{padding:11px 16px;cursor:pointer;font-size:.88rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.sug-item:last-child{border-bottom:none}
+.sug-item:hover{background:var(--wash2)}
+.sug-item span{font-size:.78rem;color:var(--muted)}
+.demo-strip{padding:16px 28px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.demo-label{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.demo-btn{border:1px solid var(--line);background:var(--white);font-family:inherit;font-weight:700;font-size:13px;color:var(--gray2);padding:8px 15px;border-radius:9px;cursor:pointer;transition:.15s;box-shadow:var(--shadow-sm)}
+.demo-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ── COMPANY CARD ── */
+.co-card{display:none}
+.co-card-inner{background:var(--white);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-lg);overflow:hidden;margin-bottom:16px}
+.co-header{padding:24px 28px 18px;border-bottom:1px solid var(--line)}
+.co-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:12px}
+.co-name{font-size:1.5rem;font-weight:900;letter-spacing:-.03em}
+.co-meta{font-size:.82rem;color:var(--muted);margin-top:4px;font-weight:600}
+.risk-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:800;flex-shrink:0}
+.risk-H{background:#FFE3EE;color:var(--pink)} .risk-M{background:#FFF1DC;color:var(--warn)} .risk-L{background:var(--lav);color:var(--blue)}
+.co-score-row{display:flex;gap:10px;flex-wrap:wrap}
+.score-chip{background:var(--wash2);border-radius:10px;padding:8px 14px;font-size:.82rem;border:1px solid var(--line)}
+.score-chip b{font-weight:800;color:var(--ink)}
+.score-chip span{color:var(--muted);margin-left:3px}
+.co-body{padding:24px 28px}
+.co-section-h{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.co-layers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+@media(max-width:700px){.co-layers{grid-template-columns:1fr}}
+.co-layer{border-radius:14px;padding:16px;border:1px solid}
+.co-layer.cl1{background:rgba(47,75,240,.05);border-color:rgba(47,75,240,.18)}
+.co-layer.cl2{background:rgba(14,159,110,.05);border-color:rgba(14,159,110,.18)}
+.co-layer.cl3{background:rgba(255,45,120,.05);border-color:rgba(255,45,120,.18)}
+.co-layer-num{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+.co-layer-nm{font-size:.82rem;font-weight:700;color:var(--gray2);margin-bottom:8px}
+.co-layer-sc{font-size:1.7rem;font-weight:900;letter-spacing:-.03em}
+.cl1 .co-layer-sc{color:var(--blue)} .cl2 .co-layer-sc{color:#0E9F6E} .cl3 .co-layer-sc{color:var(--pink)}
+.co-layer-detail{font-size:.77rem;color:var(--muted);margin-top:6px;line-height:1.5}
+.gauge-wrap{display:flex;align-items:center;gap:20px;padding:20px 22px;background:var(--wash1);border-radius:14px;border:1px solid var(--line);margin-bottom:24px}
+.gauge-circle{position:relative;width:90px;height:90px;flex-shrink:0}
+.gauge-circle svg{transform:rotate(-90deg)}
+.gauge-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900}
+.gauge-text{flex:1}
+.gauge-title{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:5px}
+.gauge-desc{font-size:.95rem;font-weight:800;letter-spacing:-.01em}
+.gauge-sub{font-size:.8rem;color:var(--muted);margin-top:5px}
+.nocapex-notice{background:#FFF8E6;border:1px solid #F4D49A;border-radius:11px;padding:12px 16px;font-size:.83rem;color:var(--warn);margin-bottom:20px;display:flex;align-items:center;gap:8px;font-weight:600}
+.bar-wrap{margin-bottom:14px}
+.bar-label{display:flex;justify-content:space-between;font-size:.8rem;color:var(--gray2);font-weight:600;margin-bottom:6px}
+.bar-track{height:8px;border-radius:4px;background:var(--wash3);overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.dir-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.dir-chip{padding:6px 14px;border-radius:8px;font-size:.84rem;font-weight:700}
+.dir-up{background:rgba(14,159,110,.1);color:#0E9F6E} .dir-dn{background:#FFE3EE;color:var(--pink)} .dir-nt{background:var(--wash3);color:var(--gray2)}
+
+/* ── CO ACTIONS (new: request 4) ── */
+.co-actions{display:flex;gap:10px;flex-wrap:wrap;padding:0 28px 24px}
+.co-action-btn{display:flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:.88rem;padding:12px 20px;border-radius:11px;transition:.18s}
+.btn-map{background:var(--blue);color:#fff;box-shadow:0 6px 20px rgba(47,75,240,.25)}
+.btn-map:hover{background:var(--blue2);transform:translateY(-2px)}
+.btn-reset{background:var(--white);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow-sm)}
+.btn-reset:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ── MAP ── */
+.map-controls{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:20px 24px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+.map-ctrl-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.map-search-wrap{flex:1;min-width:200px;position:relative}
+.map-input{width:100%;background:var(--wash1);border:1px solid var(--line);border-radius:10px;padding:11px 14px;color:var(--ink);font-family:inherit;font-size:.88rem;font-weight:600;outline:none;transition:border-color .2s}
+.map-input:focus{border-color:var(--blue)}
+.map-suggest{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--white);border:1px solid var(--line);border-radius:12px;z-index:60;max-height:200px;overflow-y:auto;display:none;box-shadow:var(--shadow)}
+.map-sug-item{padding:10px 15px;cursor:pointer;font-size:.85rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;font-weight:600}
+.map-sug-item:last-child{border-bottom:none}
+.map-sug-item:hover{background:var(--wash2)}
+.map-sug-item span{font-size:.76rem;color:var(--muted);font-weight:500}
+.map-btn{background:var(--blue);border:none;border-radius:10px;padding:11px 20px;color:#fff;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s}
+.map-btn:hover{background:var(--blue2)}
+.map-mode-wrap{display:flex;gap:5px}
+.map-mode-btn{background:var(--white);border:1px solid var(--line);border-radius:9px;padding:9px 15px;font-family:inherit;font-size:.82rem;font-weight:700;color:var(--gray2);cursor:pointer;transition:.15s}
+.map-mode-btn.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.map-info{font-size:.83rem;color:var(--gray2);min-height:20px;font-weight:500}
+.scatter-wrap{position:relative;background:var(--white);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm)}
+.scatter-wrap svg{display:block;width:100%;height:auto}
+.map-dot{cursor:pointer}
+.map-tooltip{position:absolute;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:.82rem;pointer-events:none;display:none;z-index:80;min-width:190px;box-shadow:var(--shadow)}
+.map-tooltip b{color:var(--ink);font-size:.9rem;font-weight:800}
+.tip-row{color:var(--gray2);margin-top:4px;font-size:.8rem;font-weight:500}
+.map-legend{display:flex;gap:18px;flex-wrap:wrap;padding:14px 20px;border-top:1px solid var(--line);background:var(--wash1)}
+.map-leg-item{display:flex;align-items:center;gap:7px;font-size:.8rem;color:var(--gray2);font-weight:600}
+.map-leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* ── SCREENER ── */
+.scr-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.scr-filter{background:var(--white);border:1px solid var(--line);border-radius:9px;padding:8px 15px;font-family:inherit;font-size:.82rem;font-weight:700;color:var(--gray2);cursor:pointer;transition:.15s;box-shadow:var(--shadow-sm)}
+.scr-filter:hover,.scr-filter.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.scr-count{font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:12px}
+.scr-table{width:100%;border-collapse:collapse;font-size:.85rem;background:var(--white);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid var(--line)}
+.scr-table th{text-align:left;padding:12px 14px;font-size:.74rem;font-weight:800;letter-spacing:.06em;color:var(--muted);background:var(--wash1);border-bottom:1px solid var(--line)}
+.scr-table td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+.scr-table tr:last-child td{border-bottom:none}
+.scr-table tr:hover td{background:var(--wash2)}
+.scr-table tr.no-capex-row td:first-child{border-left:3px solid #E0A005;padding-left:11px}
+.scr-table tr.no-capex-row{background:rgba(255,248,230,.4)}
+.scr-link{color:var(--blue);cursor:pointer;font-weight:700;text-decoration:none}
+.scr-link:hover{text-decoration:underline}
+.scr-more-btn{width:100%;background:var(--white);border:1px solid var(--line);border-radius:11px;padding:13px;font-family:inherit;font-size:.88rem;font-weight:700;color:var(--gray2);cursor:pointer;margin-top:12px;transition:.15s;box-shadow:var(--shadow-sm)}
+.scr-more-btn:hover{border-color:var(--blue);color:var(--blue)}
+.note{background:var(--white);border:1px dashed var(--line);border-radius:16px;padding:20px 24px;font-size:.85rem;color:var(--gray2);line-height:1.7}
+.note b{color:var(--ink)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s cubic-bezier(.2,.7,.2,1),transform .65s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ── TREND ── */
+.trend-section{background:var(--wash1);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:20px}
+.trend-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.trend-title{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.trend-verdict{display:flex;align-items:center;gap:7px;font-size:.85rem;font-weight:800}
+.trend-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.trend-year{font-size:.8rem;font-weight:700;color:var(--gray2);width:48px;flex-shrink:0;white-space:nowrap}
+.now-tag{font-size:.65rem;background:var(--blue);color:#fff;padding:1px 6px;border-radius:5px;font-style:normal;font-weight:800;vertical-align:middle;margin-left:3px}
+.trend-track{flex:1;height:22px;background:var(--wash3);border-radius:7px;overflow:hidden}
+.trend-fill{height:100%;border-radius:7px}
+.trend-val{font-size:.88rem;font-weight:900;width:38px;text-align:right;flex-shrink:0}
+.trend-delta{font-size:.78rem;font-weight:700;width:38px;text-align:right;flex-shrink:0}
+.reliability-box{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin-top:12px;font-size:.83rem;color:var(--gray2);line-height:1.6}
+.reliability-box b{color:var(--ink);font-weight:800}
+
+/* ── UF LAYERS ── */
+.uf-layers{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.uf-layer{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.uf-top{display:flex;align-items:flex-start;gap:12px}
+.uf-icon{font-size:1.6rem;flex-shrink:0;line-height:1}
+.uf-content{flex:1}
+.uf-label{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
+.uf-score-row{display:flex;align-items:baseline;gap:8px;margin-bottom:5px}
+.uf-score{font-size:1.5rem;font-weight:900}
+.uf-score-max{font-size:.85rem;color:var(--muted);font-weight:600}
+.uf-desc{font-size:.85rem;color:var(--gray2);line-height:1.55}
+.uf-bar-track{height:6px;background:var(--wash3);border-radius:3px;margin-top:10px;overflow:hidden}
+.uf-bar-fill{height:100%;border-radius:3px;transition:width .7s cubic-bezier(.2,.7,.2,1)}
+.uf-nocap{color:var(--muted);font-style:italic;font-size:.85rem}
+
+/* ── VERDICT CARD ── */
+.verdict-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;margin-bottom:16px;display:flex;align-items:flex-start;gap:18px}
+.verdict-gauge{flex-shrink:0;position:relative;width:84px;height:84px}
+.verdict-gauge svg{transform:rotate(-90deg)}
+.verdict-gauge-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900}
+.verdict-text{flex:1}
+.verdict-risk-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:999px;font-size:.82rem;font-weight:800;margin-bottom:9px}
+.verdict-title{font-size:1.05rem;font-weight:900;letter-spacing:-.02em;margin-bottom:7px}
+.verdict-desc{font-size:.88rem;color:var(--gray2);line-height:1.6}
+
+/* ── TECH TOGGLE ── */
+.tech-toggle{border:1px dashed var(--line);border-radius:12px;margin:4px 0 20px;overflow:hidden}
+.tech-toggle-btn{width:100%;background:var(--wash1);border:none;font-family:inherit;font-size:.83rem;font-weight:700;color:var(--gray2);padding:11px 18px;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center}
+.tech-toggle-btn:hover{background:var(--wash2)}
+.tech-toggle-arrow{transition:transform .25s}
+.tech-toggle-body{display:none;padding:16px 18px;background:var(--white);border-top:1px dashed var(--line)}
+.tech-toggle-body.open{display:block}
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+@media(max-width:600px){.tech-grid{grid-template-columns:1fr 1fr}}
+.tech-item{background:var(--wash1);border-radius:8px;padding:9px 12px}
+.tech-label{font-size:.7rem;font-weight:700;color:var(--muted);margin-bottom:3px;letter-spacing:.04em}
+.tech-val{font-size:.82rem;font-weight:800;font-family:monospace;color:var(--ink)}
+.tech-formula{background:var(--wash2);border-radius:8px;padding:10px 14px;font-size:.78rem;font-family:monospace;color:var(--gray2);line-height:1.8}
+
+/* ── TREND (복원 호환) ── */
+.trend-section{background:var(--wash1);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:0}
+.trend-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.trend-title{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.trend-verdict{display:flex;align-items:center;gap:7px;font-size:.85rem;font-weight:800}
+.trend-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.trend-year{font-size:.8rem;font-weight:700;color:var(--gray2);width:48px;flex-shrink:0;white-space:nowrap}
+.now-tag{font-size:.65rem;background:var(--blue);color:#fff;padding:1px 6px;border-radius:5px;font-style:normal;font-weight:800;vertical-align:middle;margin-left:3px}
+.trend-track{flex:1;height:22px;background:var(--wash3);border-radius:7px;overflow:hidden}
+.trend-fill{height:100%;border-radius:7px;transition:width .6s}
+.trend-val{font-size:.88rem;font-weight:900;width:38px;text-align:right;flex-shrink:0}
+.trend-delta{font-size:.78rem;font-weight:700;width:38px;text-align:right;flex-shrink:0}
+.reliability-box{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin-top:12px;font-size:.83rem;color:var(--gray2);line-height:1.6}
+.reliability-box b{color:var(--ink);font-weight:800}
+
+/* ── 연도 탭 ── */
+.yr-tabs-wrap{padding:16px 28px;border-bottom:1px solid var(--line);background:var(--wash1)}
+.yr-tabs-label{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.yr-tabs{display:flex;gap:7px;flex-wrap:wrap}
+.yr-tab{border:1px solid var(--line);background:var(--white);font-family:inherit;font-weight:700;font-size:.82rem;color:var(--gray2);padding:8px 16px;border-radius:9px;cursor:pointer;transition:.15s;box-shadow:var(--shadow-sm)}
+.yr-tab:hover{border-color:var(--blue);color:var(--blue)}
+.yr-tab.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.yr-tab-info{font-size:.78rem;color:var(--muted);margin-top:6px;font-weight:500}
+
+/* ── 기술 토글 (개선) ── */
+.tech-toggle{border:1px solid var(--line);border-radius:14px;margin:4px 0 20px;overflow:hidden}
+.tech-toggle-btn{width:100%;background:var(--wash1);border:none;font-family:inherit;font-size:.85rem;font-weight:700;color:var(--gray2);padding:13px 20px;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;transition:.15s}
+.tech-toggle-btn:hover{background:var(--wash2)}
+.tech-arrow{display:inline-block;transition:transform .25s;font-style:normal}
+.tech-body{display:none;padding:0;border-top:1px solid var(--line)}
+.tech-body.open{display:block}
+.tech-block{padding:16px 20px;border-bottom:1px solid var(--line)}
+.tech-block:last-child{border-bottom:none}
+.tech-block-title{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.tech-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:.83rem}
+.tech-row:last-child{margin-bottom:0}
+.tech-term{font-weight:700;color:var(--ink);width:130px;flex-shrink:0;font-family:monospace;font-size:.8rem}
+.tech-explain{color:var(--gray2);flex:1;line-height:1.5}
+.tech-num{font-family:monospace;font-weight:800;white-space:nowrap}
+.tech-num.pos{color:#0E9F6E} .tech-num.neg{color:#FF2D78} .tech-num.neu{color:#9AA3B5}
+.formula-display{background:var(--wash1);border-radius:10px;padding:14px 18px;font-family:monospace;font-size:.85rem;color:var(--ink);line-height:1.9}
+.formula-display .f-label{font-size:.78rem;color:var(--muted);display:block;margin-bottom:8px;font-family:inherit;font-weight:700;letter-spacing:.06em}
+.formula-display .f-line{color:var(--blue);font-weight:700}
+.formula-display .f-sub{font-size:.76rem;color:var(--muted);margin-left:8px}
+.tech-note{background:#FFF8E6;border-radius:8px;padding:10px 14px;font-size:.8rem;color:#8A5A14;line-height:1.6;margin-top:8px}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <div class="nav-in">
+    <div class="logo" onclick="go('home')">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none"><circle cx="5" cy="9" r="2.5" fill="white"/><circle cx="9" cy="5" r="2.5" fill="white" opacity=".7"/><circle cx="13" cy="9" r="2.5" fill="white" opacity=".85"/><path d="M5 9h8" stroke="white" stroke-width="1.2" opacity=".4"/></svg>
+      </div>
+      <span class="logo-txt">Tri<span>Signal</span></span>
+    </div>
+    <div class="nav-menu">
+      <button class="nav-btn on" data-v="home" onclick="go('home')">서비스 소개</button>
+      <button class="nav-btn" data-v="diag" onclick="go('diag')">기업 진단</button>
+      <button class="nav-btn" data-v="map" onclick="go('map');initMapOnce()">ESG Signal Map</button>
+      <button class="nav-btn" data-v="scr" onclick="go('scr')">기업 스크리너</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ════ HOME ════ -->
+<div id="v-home" class="view active">
+
+  <!-- 기능 탭 스트립 (서비스 위) -->
+  <div class="func-strip">
+    <div class="func-strip-in">
+      <span class="func-strip-label">분석 기능</span>
+      <button class="func-strip-btn" onclick="go('diag')">
+        <span class="ficon">🔍</span>기업 진단
+      </button>
+      <button class="func-strip-btn" onclick="go('map');initMapOnce()">
+        <span class="ficon">🗺️</span>ESG Signal Map
+      </button>
+      <button class="func-strip-btn" onclick="go('scr')">
+        <span class="ficon">📋</span>기업 스크리너
+      </button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-eyebrow reveal"><span class="dot"></span> ESG Signal Consistency Framework</div>
+      <h1 class="hero-title reveal"><span class="blue">세 개의 신호</span>가<br><span class="pink">하나의 ESG</span>를 말한다</h1>
+      <p class="hero-tagline reveal">Three Signals, One ESG Perspective</p>
+      <p class="hero-sub reveal">구조(KCGS) · 행동(CAPEX) · 서술(Text)을 통합하여<br>ESG를 더 <b>입체적으로</b> 해석합니다</p>
+    </div>
+  </header>
+
+  <section class="block block-split">
+    <div class="wrap">
+      <div class="kicker reveal"><span class="ln"></span>ESG 신호 일관성 판별</div>
+      <h2 class="big reveal">텍스트와 행동이<br>같은 방향을 <span class="blue">가리키는가?</span></h2>
+      <p class="lead reveal">ESG 서술이 강해도 실제 투자(CAPEX)와 외부 등급(KCGS)이 따라오지 않으면, 그것은 신호 왜곡입니다.</p>
+      <div class="case-grid">
+        <div class="case-card case-consistent reveal">
+          <div class="case-badge">CONSISTENT ✓</div>
+          <div class="case-title">신호 일관 — 높은 신뢰도</div>
+          <div class="case-arrows">텍스트 ↑ &nbsp;·&nbsp; CAPEX ↑ &nbsp;·&nbsp; KCGS 등급 ↑</div>
+          <div class="case-desc">세 층의 신호가 같은 방향. 사업보고서의 ESG 서술이 실제 투자 행동 및 외부 평가와 일관됩니다.</div>
+        </div>
+        <div class="case-card case-mismatch reveal">
+          <div class="case-badge">MISMATCH ⚠</div>
+          <div class="case-title">신호 불일치 — 왜곡 가능성</div>
+          <div class="case-arrows">텍스트 ↑ &nbsp;·&nbsp; CAPEX ↓ &nbsp;·&nbsp; KCGS 등급 ↓</div>
+          <div class="case-desc">서술은 강하지만 실제 투자·외부 등급이 괴리됩니다. 잠재적 ESG 신호 왜곡 가능성을 시사합니다.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="kicker reveal"><span class="ln"></span>3-Layer 모델 구조</div>
+      <h2 class="big reveal">독립된 세 데이터 소스로<br>교차 검증합니다</h2>
+      <div class="layer-grid">
+        <div class="layer-card lc-l1 reveal">
+          <div class="bartop"></div>
+          <span class="layer-tag">LAYER 1 · NARRATIVE</span>
+          <h3>서술 신호</h3>
+          <div class="lsrc">DART 사업보고서 텍스트</div>
+          <p>Seed(40%) — ESG 핵심 키워드 밀도<br>Content(30%) — TF-IDF SVD 주성분<br>Semantic(30%) — KoSimCSE 임베딩 PCA</p>
+          <div class="lmech">neg_SEPC1 · SEPC7 · neg_TFPC2 · TFPC1</div>
+        </div>
+        <div class="layer-card lc-l2 reveal">
+          <div class="bartop"></div>
+          <span class="layer-tag">LAYER 2 · ACTION</span>
+          <h3>행동 신호</h3>
+          <div class="lsrc">CAPEX 환경 투자</div>
+          <p>비금융: mean(capex_intensity_log_z, E_industry_z)<br>금융: E_industry_z<br>CAPEX없음: E_industry_z만 적용</p>
+          <div class="lmech">319개 정상 | 11개 CAPEX없음 | 38개 금융</div>
+        </div>
+        <div class="layer-card lc-l3 reveal">
+          <div class="bartop"></div>
+          <span class="layer-tag">LAYER 3 · VALIDATE</span>
+          <h3>검증 신호</h3>
+          <div class="lsrc">KCGS 외부 ESG 등급</div>
+          <p>Layer3 = −esg_numeric_z<br>높은 등급 → 낮은 신호 위험 (역방향)<br>등급: A+·A·B+·B·C·D</p>
+          <div class="lmech">6단계 등급 → z-score → 역전</div>
+        </div>
+      </div>
+      <div class="formula-box reveal">
+        <div class="formula-title">Signal Mismatch Score 산출</div>
+        <div class="formula-row">비금융 + CAPEX있음 (319개) &nbsp; GW = <span class="hl-blue">0.35×L1 − 0.45×L2 − 0.20×L3</span></div>
+        <div class="formula-row">비금융 + CAPEX없음 (11개)  &nbsp;&nbsp; GW = <span class="hl-warn">0.575×L1 − 0.425×L3</span></div>
+        <div class="formula-row">금융 (38개) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GW = <span class="hl-purple">0.60×L1 − 0.20×L2 − 0.20×L3</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block block-split">
+    <div class="wrap">
+      <div class="kicker reveal"><span class="ln"></span>데이터가 말한 것</div>
+      <h2 class="big reveal">세 층은 서로 다른 곳을<br>바라보고 있었습니다</h2>
+      <div class="findings">
+        <div class="finding f1 reveal"><div class="num">1</div><div><h4>텍스트는 행동(CAPEX)과 연결된다</h4><p>ESG 텍스트 점수가 높을수록 환경 투자(CAPEX)가 유의미하게 높았습니다. 서술은 단순 이미지 메이킹이 아니라 실제 자본 배분과 함께 움직입니다.</p><span class="pill">서술 ↔ 행동 = 양(+)의 관계</span></div></div>
+        <div class="finding f2 reveal"><div class="num">2</div><div><h4>그러나 외부 평가(KCGS)와는 단절된다</h4><p>같은 텍스트 점수와 KCGS 등급을 직접 회귀하면 유의미한 관계가 없습니다. 사업보고서는 "행동 데이터"에 가깝고 "평가 데이터"가 아닙니다.</p><span class="pill">서술 ↔ 등급 = 연결 약함</span></div></div>
+        <div class="finding f3 reveal"><div class="num">3</div><div><h4>G 키워드는 오히려 역방향이다</h4><p>지배구조(G) 키워드를 많이 쓴 기업일수록 KCGS 등급이 낮아지는 경향. 비집약 업종에서 강한 신호 왜곡(계수 −0.895*)이 관측됩니다.</p><span class="pill">G 키워드 ↑ → 등급 ↓ · 경계 신호</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="kicker reveal"><span class="ln"></span>적용 모델 파일</div>
+      <h2 class="big reveal">분석 파이프라인 · 5 Step</h2>
+      <div class="file-shell reveal">
+        <div class="file-shell-head">Pipeline · Source Files</div>
+        <div class="file-row"><span class="file-tag ft1">STEP 1</span><div><div class="file-name">STEP1_TF-IDF_SVD.ipynb</div><div class="file-desc">TF-IDF 벡터화 → SVD → 유의 주성분 선택 (neg_TFPC2, TFPC1)</div></div></div>
+        <div class="file-row"><span class="file-tag ft2">STEP 2</span><div><div class="file-name">kosimcse_sig_pcs.csv</div><div class="file-desc">KoSimCSE 문장 임베딩 PCA → ESG 신호 주성분 (neg_SEPC1, SEPC7)</div></div></div>
+        <div class="file-row"><span class="file-tag ft2">STEP 2b</span><div><div class="file-name">STEP3-4_5_PCA_상관.ipynb</div><div class="file-desc">PCA 주성분 상관분석 → KCGS 등급 유의 PC 선별</div></div></div>
+        <div class="file-row"><span class="file-tag ft3">STEP 3</span><div><div class="file-name">PHASE5_통합 (최종).ipynb</div><div class="file-desc">OLS 모델 A-D + Ordered Logit + KR-FinBERT 비교 (Robustness)</div></div></div>
+        <div class="file-row"><span class="file-tag ft4">STEP 4</span><div><div class="file-name">PHASE5_재무통제_Robustness (최종).ipynb</div><div class="file-desc">ROA·부채비율 재무통제 + financial_data_nonfinancial.csv 병합</div></div></div>
+        <div class="file-row"><span class="file-tag ft4">OUTPUT</span><div><div class="file-name">greenwashing_final_result.csv</div><div class="file-desc">368개 기업-연도 최종 결과 (Layer1~3, Signal Score, Risk Level)</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="footer-cta">
+    <div class="wrap">
+      <h2>등급 하나만 보고<br>ESG를 판단하지 마세요</h2>
+      <p>TriSignal은 구조·행동·서술 세 층의 신호가 같은 방향을 가리키는지 확인합니다</p>
+      <div class="footer-tagline">"Three Signals, One ESG Perspective"</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-in">
+      <div><div class="foot-logo">TriSignal</div>ESG Signal Consistency Framework · 368 obs. · 2021-2023</div>
+      <div style="max-width:520px;line-height:1.6">비정형데이터분석 기말 프로젝트 데모 산출물. 수치는 연구용이며 투자 권유가 아닙니다.</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ════ DIAG ════ -->
+<div id="v-diag" class="view">
+  <div class="wrap">
+    <div class="page-head">
+      <div class="page-kicker">Menu 1 · 기업 진단</div>
+      <div class="page-title">기업 ESG 신호 일관성 진단</div>
+      <div class="page-sub">368개 기업 모두 검색 가능 · 기업명을 입력하고 Enter 또는 진단 버튼</div>
+    </div>
+    <div class="app-shell">
+      <div class="app-head">
+        <div class="search-wrap" id="diagSearchWrap">
+          <div class="search-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#8A92A6" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="#8A92A6" stroke-width="2" stroke-linecap="round"/></svg>
+            <input id="diagSearch" placeholder="기업명 검색 예) 삼성전자, SK이노베이션, 한화생명..."
+              oninput="diagSuggest()"
+              onkeydown="if(event.key==='Enter'){diagRun();}else if(event.key==='Escape'){closeDiagSug();}">
+            <button class="search-go" onclick="diagRun()">진단</button>
+          </div>
+          <div class="dash-suggest" id="diagSuggest"></div>
+        </div>
+      </div>
+      <div class="demo-strip">
+        <span class="demo-label">데모 바로보기</span>
+        <button class="demo-btn" onclick="pickDemo('삼성전자')">삼성전자</button>
+        <button class="demo-btn" onclick="pickDemo('SK이노베이션')">SK이노베이션</button>
+        <button class="demo-btn" onclick="pickDemo('CJ제일제당')">CJ제일제당</button>
+        <button class="demo-btn" onclick="pickDemo('POSCO홀딩스')">POSCO홀딩스</button>
+        <button class="demo-btn" onclick="pickDemo('한화생명')">한화생명</button>
+        <button class="demo-btn" onclick="pickDemo('S-Oil')">S-Oil</button>
+      </div>
+    </div>
+    <div id="coCard" class="co-card"></div>
+  </div>
+</div>
+
+<!-- ════ MAP ════ -->
+<div id="v-map" class="view">
+  <div class="wrap">
+    <div class="page-head">
+      <div class="page-kicker">Menu 2 · ESG Signal Map</div>
+      <div class="page-title">Narrative × Action 신호 분포</div>
+      <div class="page-sub">368개 기업의 텍스트 신호(Y) × CAPEX 신호(X) 산점도 · 클릭하거나 검색하여 기업 위치 확인</div>
+    </div>
+    <div class="map-controls">
+      <div class="map-ctrl-row">
+        <div class="map-search-wrap">
+          <input id="mapSearch" class="map-input" placeholder="기업명 검색..."
+            oninput="mapSuggest()"
+            onkeydown="if(event.key==='Enter'){mapDoSearch();}else if(event.key==='Escape'){closeMapSug();}">
+          <div class="map-suggest" id="mapSuggest"></div>
+        </div>
+        <button class="map-btn" onclick="mapDoSearch()">선택</button>
+        <div class="map-mode-wrap">
+          <button class="map-mode-btn on" onclick="setMapMode('all',this)">전체 보기</button>
+          <button class="map-mode-btn" onclick="setMapMode('industry',this)">업종 비교</button>
+        </div>
+      </div>
+      <div id="mapInfo" class="map-info">← 기업을 검색하거나 점을 클릭하면 해당 기업 위치가 강조됩니다</div>
+    </div>
+    <div class="scatter-wrap" id="scatterWrap">
+      <svg id="mapSvg" viewBox="0 0 660 480" xmlns="http://www.w3.org/2000/svg">
+        <rect width="660" height="480" fill="#F4F7FF"/>
+        <line x1="90" y1="30" x2="90" y2="440" stroke="#DFE3FB" stroke-width="1.5"/>
+        <line x1="90" y1="440" x2="610" y2="440" stroke="#DFE3FB" stroke-width="1.5"/>
+        <line x1="350" y1="30" x2="350" y2="440" stroke="#C9D6FB" stroke-width="1" stroke-dasharray="5,4"/>
+        <line x1="90" y1="235" x2="610" y2="235" stroke="#C9D6FB" stroke-width="1" stroke-dasharray="5,4"/>
+        <text x="220" y="54" font-size="11" fill="#9AA3B5" font-weight="700" text-anchor="middle">텍스트↑ CAPEX↓</text>
+        <text x="220" y="68" font-size="10" fill="#9AA3B5" text-anchor="middle">⚠ 신호 불일치</text>
+        <text x="480" y="54" font-size="11" fill="#9AA3B5" font-weight="700" text-anchor="middle">텍스트↑ CAPEX↑</text>
+        <text x="480" y="68" font-size="10" fill="#9AA3B5" text-anchor="middle">✓ 신호 일치</text>
+        <text x="220" y="430" font-size="10" fill="#9AA3B5" font-weight="700" text-anchor="middle">텍스트↓ CAPEX↓</text>
+        <text x="480" y="430" font-size="10" fill="#9AA3B5" font-weight="700" text-anchor="middle">텍스트↓ CAPEX↑</text>
+        <text x="350" y="468" font-size="11" fill="#9AA3B5" text-anchor="middle">Action Signal (CAPEX · 환경 투자) →</text>
+        <text x="22" y="235" font-size="11" fill="#9AA3B5" text-anchor="middle" transform="rotate(-90 22 235)">Narrative Signal (텍스트) →</text>
+        <g id="mapDots"></g>
+        <g id="mapLabels"></g>
+      </svg>
+      <div id="mapTooltip" class="map-tooltip"></div>
+    </div>
+    <div class="map-legend">
+      <div class="map-leg-item"><div class="map-leg-dot" style="background:#FF2D78"></div>High Risk (상위 20%)</div>
+      <div class="map-leg-item"><div class="map-leg-dot" style="background:#C9810D"></div>Medium Risk (20~50%)</div>
+      <div class="map-leg-item"><div class="map-leg-dot" style="background:#2F4BF0"></div>Low Risk (하위 50%)</div>
+      <div class="map-leg-item"><div class="map-leg-dot" style="background:none;border:2px dashed #9AA3B5"></div>CAPEX없음</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SCREENER ════ -->
+<div id="v-scr" class="view">
+  <div class="wrap">
+    <div class="page-head">
+      <div class="page-kicker">Menu 3 · 기업 스크리너</div>
+      <div class="page-title">전체 기업 데이터</div>
+      <div class="page-sub">368개 기업-연도 · 클릭하면 기업 진단으로 이동</div>
+    </div>
+    <div class="scr-filters">
+      <button class="scr-filter on" onclick="setFilter('all',this)">전체 <b id="cntAll"></b></button>
+      <button class="scr-filter" onclick="setFilter('nonfin',this)">비금융 <b id="cntNF"></b></button>
+      <button class="scr-filter" onclick="setFilter('fin',this)">금융 <b id="cntF"></b></button>
+      <button class="scr-filter" onclick="setFilter('hrisk',this)">High Risk <b id="cntH"></b></button>
+      <button class="scr-filter" onclick="setFilter('nocap',this)">CAPEX없음 <b id="cntNC"></b></button>
+    </div>
+    <div id="scrCount" class="scr-count"></div>
+    <table class="scr-table">
+      <thead><tr>
+        <th>기업명</th><th>업종</th><th>연도</th><th>구분</th>
+        <th>신호점수</th><th>L1 텍스트</th><th>L2 액션</th><th>L3 검증</th>
+        <th>KCGS</th><th>위험도</th>
+      </tr></thead>
+      <tbody id="scrBody"></tbody>
+    </table>
+    <button id="scrMore" class="scr-more-btn" onclick="loadMore()" style="display:none">더 보기</button>
+    <div class="note" style="margin-top:20px"><b>참고.</b> 신호점수는 Signal Mismatch Score의 역전값(0-100)으로, 높을수록 세 층의 신호가 일관됩니다. L1·L2·L3는 z-score입니다.</div>
+  </div>
+</div>
+
+<script>
+const D=[["상상인증권","금융보조",2022,"D",0,0,-1.363,"L",100.0,-1.242,-0.858,1.527,10,null,19.0,"down",null,"down",-0.739,-1.406,-1.748],["종근당홀딩스","의약품",2023,"B+",0,1,-0.848,"L",78.3,-0.19,1.878,-0.317,60,96.9,45.3,"flat","up","flat",-0.084,-0.249,-0.272],["대동","자동차",2023,"C",0,1,-0.793,"L",76.0,0.528,1.768,0.912,25,94.2,63.2,"down","up","up",0.443,0.955,0.214],["태원물산","기타운송장비",2023,"D",0,0,-0.781,"L",75.5,-0.23,-0.949,1.527,10,null,44.2,"down",null,"flat",0.143,-0.74,-0.218],["삼성전자","전자/반도체",2022,"A",0,1,-0.763,"L",74.7,0.356,2.387,-0.932,80,100,58.9,"up","up","up",0.456,0.447,0.133],["CJ제일제당","식료품",2023,"A",0,1,-0.743,"L",73.9,0.718,2.625,-0.932,80,100,67.9,"up","up","up",-0.022,1.36,1.062],["CJ제일제당","식료품",2024,"A",0,1,-0.736,"L",73.6,0.64,2.548,-0.932,80,100,66.0,"up","up","up",0.101,1.154,0.844],["금호전기","기계",2024,"D",0,1,-0.737,"L",73.6,-0.23,0.78,1.527,10,69.5,44.3,"down","up","flat",-0.696,-0.57,0.732],["대한방직","섬유",2022,"C",0,1,-0.696,"L",71.9,-0.599,0.676,0.912,25,66.9,35.0,"down","up","down",0.162,-0.915,-1.296],["세아베스틸지주","1차금속(철강)",2022,"C",0,1,-0.682,"L",71.3,0.14,1.219,0.912,25,80.5,53.5,"down","up","flat",-0.726,0.393,1.042],["KR모터스","가구",2022,"D",0,0,-0.672,"L",70.9,-0.04,-0.908,1.527,10,null,49.0,"down",null,"flat",-0.518,-0.51,1.067],["BYC","의복",2022,"D",0,1,-0.672,"L",70.9,-1.049,0.0,1.527,10,50.0,23.8,"down","flat","down",-0.539,-1.62,-1.156],["경방","소매",2024,"C",0,1,-0.673,"L",70.9,-0.01,1.082,0.912,25,77.0,49.8,"down","up","flat",0.273,-0.095,-0.302],["태원물산","기타운송장비",2022,"D",0,0,-0.666,"L",70.6,-0.031,-0.949,1.527,10,null,49.2,"down",null,"flat",0.113,-0.563,0.31],["태원물산","기타운송장비",2024,"D",0,0,-0.644,"L",69.7,0.008,-0.949,1.527,10,null,50.2,"down",null,"flat",-0.039,-0.469,0.547],["디아이동일","도매",2023,"D",0,1,-0.637,"L",69.4,-0.579,0.286,1.527,10,57.1,35.5,"down","flat","down",-0.277,-0.496,-1.065],["전방","섬유",2023,"D",0,1,-0.621,"L",68.7,-0.39,0.398,1.527,10,59.9,40.3,"down","up","down",0.125,-0.497,-0.969],["유진증권","금융보조",2022,"B",0,0,-0.594,"L",67.6,-0.814,-0.858,0.297,40,null,29.7,"flat",null,"down",-0.429,-1.16,-0.982],["디아이동일","도매",2022,"D",0,1,-0.565,"L",66.4,-0.279,0.361,1.527,10,59.0,43.0,"down","up","flat",0.302,-0.192,-1.14],["BYC","의복",2024,"D",0,1,-0.562,"L",66.2,-0.726,0.006,1.527,10,50.1,31.8,"down","flat","down",0.206,-1.566,-1.129],["SK증권","금융보조",2024,"B+",1,1,-0.556,"L",66.0,-0.341,2.075,-0.317,60,100,41.5,"flat","up","down",0.038,-0.616,-0.573],["BYC","의복",2023,"D",0,1,-0.547,"L",65.6,-0.675,0.013,1.527,10,50.3,33.1,"down","flat","down",0.237,-1.566,-0.998],["CJ제일제당","식료품",2022,"A",0,1,-0.544,"L",65.5,0.32,1.873,-0.932,80,96.8,58.0,"up","up","up",0.058,0.892,0.097],["삼일제약","의약품",2022,"D",0,1,-0.54,"L",65.3,-1.089,-0.326,1.527,10,41.9,22.8,"down","down","down",-0.627,-1.252,-1.543],["한국앤컴퍼니","금융",2024,"B",0,1,-0.53,"L",64.9,0.484,1.423,0.297,40,85.6,62.1,"flat","up","up",0.279,0.771,0.471],["셀트리온","의약품",2023,"B",0,1,-0.497,"L",63.5,-0.172,0.839,0.297,40,71.0,45.7,"flat","up","flat",-0.019,-0.375,-0.173],["페이퍼코리아","펄프/제지",2023,"D",0,1,-0.487,"L",63.1,-0.49,0.022,1.527,10,50.6,37.8,"down","flat","down",0.145,-0.622,-1.204],["SK증권","금융보조",2022,"B+",1,0,-0.477,"L",62.7,-0.372,1.589,-0.317,60,null,40.7,"flat",null,"down",-0.129,-0.554,-0.514],["삼성전자","전자/반도체",2024,"B+",0,1,-0.479,"L",62.7,0.282,1.424,-0.317,60,85.6,57.0,"flat","up","flat",0.543,0.256,-0.042],["경방","소매",2022,"D",0,1,-0.475,"L",62.6,-0.265,0.171,1.527,10,54.3,43.4,"down","flat","flat",0.28,-0.71,-0.547],["부국증권","금융보조",2023,"C",1,1,-0.457,"L",61.8,-0.432,0.075,0.912,25,51.9,39.2,"down","flat","down",0.151,-1.015,-0.626],["SK증권","금융보조",2023,"B+",1,1,-0.452,"L",61.6,-0.423,1.309,-0.317,60,82.7,39.4,"flat","up","down",-0.134,-0.662,-0.569],["부국증권","금융보조",2024,"C",1,1,-0.448,"L",61.4,-0.421,0.063,0.912,25,51.6,39.5,"down","flat","down",0.186,-1.011,-0.64],["동양","비금속광물제품",2023,"D",0,1,-0.449,"L",61.4,0.444,0.664,1.527,10,66.6,61.1,"down","up","up",0.61,0.602,0.066],["디아이동일","도매",2024,"D",0,1,-0.432,"L",60.7,-0.307,0.042,1.527,10,51.1,42.3,"down","flat","down",-0.013,-0.254,-0.752],["경방","소매",2023,"C",0,1,-0.428,"L",60.6,-0.064,0.497,0.912,25,62.4,48.4,"down","up","flat",0.333,-0.354,-0.303],["유한양행","의약품",2024,"A",0,1,-0.429,"L",60.6,0.061,1.415,-0.932,80,85.4,51.5,"up","up","flat",-0.02,0.195,0.034],["대한방직","섬유",2024,"C",0,1,-0.42,"L",60.2,-1.139,-0.358,0.912,25,41.0,21.5,"down","down","down",-0.7,-1.321,-1.542],["유유제약","의약품",2023,"D",0,1,-0.412,"L",59.9,-0.724,-0.326,1.527,10,41.9,31.9,"down","down","down",0.03,-1.149,-1.305],["유니온","비금속광물제품",2022,"C",0,1,-0.381,"L",58.6,0.294,0.671,0.912,25,66.8,57.4,"down","up","flat",-0.366,0.752,0.717],["롯데케미칼","화학/화학제품",2023,"B+",0,1,-0.381,"L",58.6,0.799,1.61,-0.317,60,90.3,70.0,"flat","up","up",-0.419,1.717,1.505],["삼성제약","의약품",2022,"D",0,1,-0.369,"L",58.1,-0.599,-0.325,1.527,10,41.9,35.0,"down","down","down",-0.358,-0.961,-0.559],["동양","비금속광물제품",2022,"D",0,1,-0.367,"L",58.0,0.469,0.502,1.527,10,62.5,61.7,"down","up","up",0.563,0.662,0.149],["페이퍼코리아","펄프/제지",2024,"C",0,1,-0.364,"L",57.9,-0.49,0.023,0.912,25,50.6,37.8,"down","flat","down",0.145,-0.622,-1.204],["유한양행","의약품",2023,"A",0,1,-0.365,"L",57.9,-0.167,1.096,-0.932,80,77.4,45.8,"up","up","flat",0.018,-0.394,-0.186],["보해양조","음료",2023,"D",0,1,-0.361,"L",57.8,-0.743,-0.453,1.527,10,38.7,31.4,"down","down","down",-0.2,-0.767,-1.442],["삼성전자","전자/반도체",2023,"A",0,1,-0.357,"L",57.6,0.318,1.454,-0.932,80,86.4,58.0,"up","up","up",0.471,0.277,0.156],["삼일제약","의약품",2024,"C",0,1,-0.353,"L",57.4,-0.907,-0.326,0.912,25,41.9,27.3,"down","down","down",-0.807,-1.009,-0.94],["대동","자동차",2022,"D",0,0,-0.351,"L",57.3,0.517,1.155,1.527,10,null,62.9,"down",null,"up",0.592,0.7,0.235],["대한방직","섬유",2023,"C",0,1,-0.347,"L",57.2,-0.931,-0.358,0.912,25,41.0,26.7,"down","down","down",-0.058,-1.398,-1.628],["현대해상","보험",2024,"A",1,1,-0.346,"L",57.1,-0.093,2.383,-0.932,80,100,47.7,"up","up","flat",-0.069,-0.513,0.295],["천일고속","육상운송",2024,"D",0,1,-0.339,"L",56.8,-0.312,-0.169,1.527,10,45.8,42.2,"down","flat","down",0.299,-0.987,-0.453],["보해양조","음료",2022,"D",0,1,-0.333,"L",56.6,-0.662,-0.453,1.527,10,38.7,33.5,"down","down","down",-0.077,-0.686,-1.417],["상상인증권","금융보조",2023,"D",0,1,-0.334,"L",56.6,-0.633,-0.429,1.527,10,39.3,34.2,"down","down","down",-0.284,-0.541,-1.191],["천일고속","육상운송",2022,"D",0,1,-0.334,"L",56.6,-0.271,-0.147,1.527,10,46.3,43.2,"down","flat","flat",0.346,-1.004,-0.361],["화천기공","자동차",2022,"D",0,1,-0.327,"L",56.3,-0.742,-0.529,1.527,10,36.8,31.5,"down","down","down",-0.234,-1.058,-1.102],["전방","섬유",2022,"D",0,1,-0.327,"L",56.3,-0.523,-0.358,1.527,10,41.1,36.9,"down","down","down",0.22,-0.939,-1.095],["천일고속","육상운송",2023,"D",0,1,-0.318,"L",56.0,-0.26,-0.173,1.527,10,45.7,43.5,"down","flat","flat",0.281,-0.987,-0.255],["국보","육상운송",2024,"D",0,1,-0.314,"L",55.8,-0.684,-0.513,1.527,10,37.2,32.9,"down","down","down",-0.041,-1.029,-1.196],["삼진제약","의약품",2022,"D",0,1,-0.312,"L",55.7,-0.438,-0.325,1.527,10,41.9,39.0,"down","down","down",0.092,-0.466,-1.117],["하이트진로","음료",2022,"B",0,1,-0.308,"L",55.5,-0.003,0.551,0.297,40,63.8,49.9,"flat","up","flat",0.206,-0.058,-0.228],["이화산업","도매",2024,"D",0,1,-0.306,"L",55.4,-0.836,-0.65,1.527,10,33.8,29.1,"down","down","down",-0.1,-1.257,-1.397],["유니온","비금속광물제품",2024,"C",0,1,-0.301,"L",55.2,0.397,0.571,0.912,25,64.3,59.9,"down","up","up",0.039,0.821,0.449],["롯데손해보험","보험",2024,"B+",1,1,-0.301,"L",55.2,-0.766,-0.477,-0.317,60,38.1,30.8,"flat","down","down",-0.531,-1.167,-0.678],["삼성제약","의약품",2024,"D",0,1,-0.297,"L",55.0,-0.394,-0.326,1.527,10,41.9,40.2,"down","down","down",-0.312,-1.091,0.196],["일동홀딩스","의약품",2024,"B+",0,1,-0.293,"L",54.9,-0.514,0.391,-0.317,60,59.8,37.1,"flat","up","down",-0.273,-0.555,-0.796],["부국증권","금융보조",2022,"C",1,0,-0.288,"L",54.7,-0.462,-0.858,0.912,25,null,38.4,"down",null,"down",0.188,-1.138,-0.654],["페이퍼코리아","펄프/제지",2022,"D",0,1,-0.289,"L",54.7,-0.27,-0.247,1.527,10,43.8,43.2,"down","flat","flat",-0.193,-0.094,-0.549],["국보","육상운송",2023,"D",0,1,-0.289,"L",54.7,-0.612,-0.513,1.527,10,37.2,34.7,"down","down","down",0.064,-0.998,-1.127],["유유제약","의약품",2024,"C",0,1,-0.29,"L",54.7,-0.724,-0.325,0.912,25,41.9,31.9,"down","down","down",0.03,-1.149,-1.305],["유니온","비금속광물제품",2023,"C",0,1,-0.285,"L",54.6,0.32,0.477,0.912,25,61.9,58.0,"down","up","up",0.019,0.754,0.286],["가온전선","기계",2022,"B",0,1,-0.283,"L",54.5,-0.176,0.36,0.297,40,59.0,45.6,"flat","up","flat",-0.986,0.284,0.445],["대한제분","식료품",2023,"D",0,1,-0.284,"L",54.5,-0.516,-0.449,1.527,10,38.8,37.1,"down","down","down",-0.499,-0.422,-0.634],["삼성제약","의약품",2023,"D",0,1,-0.282,"L",54.4,-0.353,-0.326,1.527,10,41.9,41.2,"down","down","down",-0.242,-1.069,0.217],["넥센타이어","고무/플라스틱",2024,"B",0,1,-0.282,"L",54.4,0.066,0.547,0.297,40,63.7,51.7,"flat","up","flat",0.501,0.126,-0.572],["유진증권","금융보조",2024,"C",0,1,-0.28,"L",54.3,-0.828,-0.428,0.912,25,39.3,29.3,"down","down","down",-0.42,-1.178,-1.023],["SPC삼립","식료품",2023,"D",0,1,-0.275,"L",54.1,0.209,0.096,1.527,10,52.4,55.2,"down","flat","flat",0.758,-0.095,-0.219],["JW중외제약","의약품",2022,"C",0,1,-0.273,"L",54.0,-0.393,-0.105,0.912,25,47.4,40.2,"down","flat","down",-0.345,-0.523,-0.327],["삼일제약","의약품",2023,"C",0,1,-0.271,"L",53.9,-1.089,-0.651,0.912,25,33.7,22.8,"down","down","down",-0.627,-1.252,-1.543],["보해양조","음료",2024,"D",0,1,-0.263,"L",53.6,-0.462,-0.453,1.527,10,38.7,38.5,"down","down","down",-0.196,-0.468,-0.809],["이화산업","도매",2022,"D",0,1,-0.26,"L",53.5,-0.706,-0.65,1.527,10,33.8,32.3,"down","down","down",0.287,-1.068,-1.669],["현대차증권","금융보조",2023,"A",0,1,-0.261,"L",53.5,-0.82,0.357,-0.932,80,58.9,29.5,"up","up","down",-0.816,-0.885,-0.761],["삼양홀딩스","금융",2022,"B+",0,1,-0.257,"L",53.4,0.419,1.037,-0.317,60,75.9,60.5,"flat","up","up",-0.048,0.838,0.622],["CS홀딩스","금융",2022,"C",0,1,-0.255,"L",53.3,-0.852,-0.501,0.912,25,37.5,28.7,"down","down","down",-0.874,-0.701,-0.974],["종근당홀딩스","의약품",2022,"B+",0,1,-0.252,"L",53.2,-0.256,0.503,-0.317,60,62.6,43.6,"flat","up","flat",0.005,-0.388,-0.474],["하이트진로","음료",2023,"B",0,1,-0.253,"L",53.2,-0.054,0.388,0.297,40,59.7,48.6,"flat","up","flat",0.182,-0.047,-0.376],["현대해상","보험",2022,"B+",1,0,-0.25,"L",53.1,0.075,1.792,-0.317,60,null,51.9,"flat",null,"flat",0.133,-0.409,0.482],["현대차증권","금융보조",2024,"B+",0,1,-0.25,"L",53.1,-0.785,0.087,-0.317,60,52.2,30.4,"flat","flat","down",-0.865,-0.784,-0.681],["삼성SDI","기계",2024,"A+",0,1,-0.252,"L",53.1,0.456,1.601,-1.547,100,90.0,61.4,"up","up","up",0.114,0.788,0.579],["조선내화","비금속광물제품",2022,"D",0,1,-0.24,"L",52.7,-0.396,-0.453,1.527,10,38.7,40.1,"down","down","down",-0.161,-0.508,-0.597],["흥국화재","보험",2024,"B+",1,1,-0.241,"L",52.7,-0.666,-0.477,-0.317,60,38.1,33.3,"flat","down","down",0.048,-1.377,-0.908],["삼양홀딩스","금융",2023,"B+",0,1,-0.231,"L",52.2,0.548,1.079,-0.317,60,77.0,63.7,"flat","up","up",-0.279,1.38,0.818],["GS글로벌","도매",2022,"B+",0,1,-0.227,"L",52.1,0.314,0.89,-0.317,60,72.3,57.9,"flat","up","up",-0.193,0.325,0.981],["일동홀딩스","의약품",2022,"B+",0,1,-0.225,"L",52.0,-0.125,0.545,-0.317,60,63.6,46.9,"flat","up","flat",-0.108,-0.254,-0.019],["남양유업","식료품",2022,"C",0,1,-0.223,"L",51.9,0.087,0.157,0.912,25,53.9,52.2,"down","flat","flat",0.662,-0.058,-0.535],["국보","육상운송",2022,"D",0,1,-0.22,"L",51.8,-0.416,-0.513,1.527,10,37.2,39.6,"down","down","down",0.246,-0.89,-0.826],["성창기업지주","전문서비스",2024,"D",0,1,-0.215,"L",51.6,0.212,-0.035,1.527,10,49.1,55.3,"down","flat","flat",-0.417,0.996,0.266],["성창기업지주","전문서비스",2022,"D",0,1,-0.215,"L",51.6,0.407,0.117,1.527,10,52.9,60.2,"down","flat","up",-0.166,1.209,0.37],["대한제분","식료품",2022,"D",0,1,-0.213,"L",51.5,-0.365,-0.489,1.527,10,37.8,40.9,"down","down","down",-0.252,-0.47,-0.412],["동국제강","금융",2022,"B",0,1,-0.207,"L",51.2,0.247,0.519,0.297,40,63.0,56.2,"flat","up","flat",0.403,0.389,-0.105],["롯데케미칼","화학/화학제품",2022,"A",0,1,-0.202,"L",51.1,0.793,1.48,-0.932,80,87.0,69.8,"up","up","up",0.054,1.369,1.203],["삼부토건","종합건설",2024,"D",0,1,-0.203,"L",51.1,-0.052,-0.268,1.527,10,43.3,48.7,"down","flat","flat",0.332,-0.126,-0.49],["이화산업","도매",2023,"C",0,1,-0.2,"L",51.0,-0.887,-0.65,0.912,25,33.8,27.8,"down","down","down",-0.1,-1.257,-1.565],["삼성SDI","기계",2022,"A",0,1,-0.193,"L",50.7,0.552,1.272,-0.932,80,81.8,63.8,"up","up","up",0.021,0.66,1.152],["삼진제약","의약품",2023,"C",0,1,-0.194,"L",50.7,-0.447,-0.322,0.912,25,41.9,38.8,"down","down","down",0.096,-0.478,-1.141],["KR모터스","가구",2023,"D",0,1,-0.195,"L",50.7,-0.267,-0.453,1.527,10,38.7,43.3,"down","down","flat",-0.907,-0.607,0.927],["제일연마","비금속광물제품",2023,"C",0,1,-0.195,"L",50.7,-0.407,-0.289,0.912,25,42.8,39.8,"down","flat","down",0.165,-0.471,-1.107],["동화약품","의약품",2024,"C",0,1,-0.19,"L",50.6,-0.441,-0.326,0.912,25,41.9,39.0,"down","down","down",-0.487,-0.09,-0.732],["동화약품","의약품",2023,"C",0,1,-0.191,"L",50.6,-0.443,-0.326,0.912,25,41.9,38.9,"down","down","down",-0.49,-0.09,-0.732],["태광산업","화학/화학제품",2022,"D",0,1,-0.191,"L",50.6,-0.008,-0.26,1.527,10,43.5,49.8,"down","flat","flat",0.032,0.014,-0.084],["SK이노베이션","석유정제",2024,"A+",0,1,-0.192,"L",50.6,0.736,1.686,-1.547,100,92.2,68.4,"up","up","up",-0.277,1.521,1.302],["고려아연","1차금속(철강)",2023,"B",0,1,-0.19,"L",50.5,0.567,0.731,0.297,40,68.3,64.2,"flat","up","up",-0.264,1.37,0.873],["흥아해운","수상운송",2024,"B",0,1,-0.184,"L",50.3,0.41,0.595,0.297,40,64.9,60.3,"flat","up","up",0.424,0.07,0.733],["남광토건","종합건설",2023,"D",0,1,-0.184,"L",50.3,-0.442,-0.613,1.527,10,34.7,38.9,"down","down","down",-0.203,-0.533,-0.67],["SK하이닉스","전자/반도체",2022,"B+",0,1,-0.185,"L",50.3,0.593,1.014,-0.317,60,75.3,64.8,"flat","up","up",0.051,0.884,1.025],["LS네트웍스","도매",2022,"B",0,1,-0.179,"L",50.1,0.082,0.329,0.297,40,58.2,52.0,"flat","up","flat",0.273,-0.163,0.072],["백광산업","화학/화학제품",2023,"D",0,1,-0.179,"L",50.1,0.361,0.001,1.527,10,50.0,59.0,"down","flat","up",0.796,0.292,-0.149],["깨끗한나라","펄프/제지",2024,"B",0,1,-0.18,"L",50.1,0.862,0.939,0.297,40,73.5,71.6,"flat","up","up",-0.0,1.44,1.434],["롯데손해보험","보험",2023,"B+",1,1,-0.176,"L",50.0,-0.558,-0.477,-0.317,60,38.1,36.0,"flat","down","down",-0.23,-1.063,-0.493],["삼부토건","종합건설",2022,"D",0,1,-0.177,"L",50.0,-0.048,-0.323,1.527,10,41.9,48.8,"down","down","flat",0.31,-0.255,-0.318],["동화약품","의약품",2022,"C",0,1,-0.178,"L",50.0,-0.407,-0.326,0.912,25,41.9,39.8,"down","down","down",-0.418,-0.062,-0.736],["성창기업지주","전문서비스",2023,"D",0,1,-0.176,"L",49.9,0.427,0.044,1.527,10,51.1,60.7,"down","flat","up",-0.124,1.202,0.386],["현대자동차","기타운송장비",2022,"B+",0,1,-0.176,"L",49.9,0.619,1.013,-0.317,60,75.3,65.5,"flat","up","up",0.316,0.864,0.777],["삼천당제약","의약품",2022,"D",0,1,-0.171,"L",49.8,-0.035,-0.325,1.527,10,41.9,49.1,"down","down","flat",-0.153,-0.623,0.71],["남양유업","식료품",2024,"B",0,1,-0.169,"L",49.7,-0.488,-0.135,0.297,40,46.6,37.8,"flat","flat","down",0.021,-0.52,-1.134],["상상인증권","금융보조",2024,"C",0,1,-0.171,"L",49.7,-0.519,-0.429,0.912,25,39.3,37.0,"down","down","down",0.05,-0.839,-0.959],["GS글로벌","도매",2023,"B+",0,1,-0.167,"L",49.6,0.322,0.764,-0.317,60,69.1,58.1,"flat","up","up",-0.181,0.229,1.087],["백광산업","화학/화학제품",2022,"D",0,1,-0.168,"L",49.6,0.104,-0.223,1.527,10,44.4,52.6,"down","flat","flat",0.093,0.35,-0.127],["CJ","금융",2022,"B+",0,1,-0.162,"L",49.4,0.654,1.011,-0.317,60,75.3,66.3,"flat","up","up",0.034,1.318,0.816],["SG글로벌","기타운송장비",2024,"D",0,1,-0.157,"L",49.2,-0.186,-0.474,1.527,10,38.1,45.3,"down","down","flat",-0.081,-0.279,-0.234],["엔씨소프트","출판",2023,"A",0,1,-0.158,"L",49.2,0.096,0.84,-0.932,80,71.0,52.4,"up","up","flat",0.656,-0.764,0.21],["삼천당제약","의약품",2024,"D",0,1,-0.158,"L",49.2,0.002,-0.325,1.527,10,41.9,50.0,"down","down","flat",0.048,-0.344,0.286],["제일연마","비금속광물제품",2024,"C",0,1,-0.159,"L",49.2,-0.61,-0.526,0.912,25,36.9,34.8,"down","down","down",-0.027,-0.839,-1.157],["하이트진로","음료",2024,"B+",0,1,-0.157,"L",49.1,-0.073,0.433,-0.317,60,60.8,48.2,"flat","up","flat",0.309,-0.341,-0.313],["종근당홀딩스","의약품",2024,"A",0,1,-0.157,"L",49.1,-0.103,0.683,-0.932,80,67.1,47.4,"up","up","flat",-0.008,-0.152,-0.18],["화천기공","자동차",2024,"C",0,1,-0.153,"L",49.0,-0.438,-0.407,0.912,25,39.8,39.0,"down","down","down",-0.117,-0.559,-0.747],["삼성SDI","기계",2023,"A",0,1,-0.153,"L",49.0,0.595,1.216,-0.932,80,80.4,64.9,"up","up","up",0.308,0.932,0.64],["현대자동차","기타운송장비",2024,"A",0,1,-0.154,"L",49.0,0.753,1.342,-0.932,80,83.5,68.8,"up","up","up",0.672,0.727,0.887],["CJ ENM","방송업",2022,"B+",0,1,-0.15,"L",48.9,-0.492,0.092,-0.317,60,52.3,37.7,"flat","flat","down",-0.218,-0.851,-0.5],["유유제약","의약품",2022,"C",0,1,-0.151,"L",48.9,-0.328,-0.326,0.912,25,41.9,41.8,"down","down","down",0.067,-0.58,-0.604],["유진증권","금융보조",2023,"B",0,1,-0.151,"L",48.9,-0.813,-0.428,0.297,40,39.3,29.7,"flat","down","down",-0.375,-1.2,-1.012],["금호전기","기계",2022,"D",0,1,-0.147,"L",48.7,-0.283,-0.573,1.527,10,35.7,42.9,"down","down","flat",-0.279,-0.706,0.134],["남광토건","종합건설",2024,"D",0,1,-0.144,"L",48.6,-0.327,-0.613,1.527,10,34.7,41.8,"down","down","down",-0.192,-0.605,-0.228],["CJ","금융",2023,"A",0,1,-0.144,"L",48.6,0.574,1.182,-0.932,80,79.5,64.3,"up","up","up",-0.128,1.377,0.706],["삼성화재해상보험","보험",2024,"B+",1,1,-0.14,"L",48.5,-0.499,-0.477,-0.317,60,38.1,37.5,"flat","down","down",-0.184,-0.832,-0.585],["SG글로벌","기타운송장비",2023,"D",0,1,-0.143,"L",48.5,-0.145,-0.474,1.527,10,38.1,46.4,"down","down","flat",-0.09,-0.346,-0.018],["SG글로벌","기타운송장비",2022,"D",0,1,-0.143,"L",48.5,-0.145,-0.474,1.527,10,38.1,46.4,"down","down","flat",-0.09,-0.346,-0.018],["SK네트웍스","도매",2023,"A",0,1,-0.139,"L",48.4,0.233,0.904,-0.932,80,72.6,55.8,"up","up","flat",-0.05,0.234,0.609],["PKC","화학/화학제품",2024,"D",0,1,-0.139,"L",48.4,0.371,-0.081,1.527,10,48.0,59.3,"down","flat","up",0.726,0.366,-0.097],["한진","육상운송",2024,"A",0,1,-0.138,"L",48.3,0.578,1.17,-0.932,80,79.2,64.4,"up","up","up",0.58,0.152,1.0],["한국주철관공업","1차금속(철강)",2024,"D",0,1,-0.131,"L",48.1,-0.569,-0.829,1.527,10,29.3,35.8,"down","down","down",-0.397,-0.644,-0.724],["CJ ENM","방송업",2023,"B+",0,1,-0.132,"L",48.1,-0.502,0.044,-0.317,60,51.1,37.4,"flat","flat","down",-0.425,-0.562,-0.546],["화천기공","자동차",2023,"C",0,1,-0.133,"L",48.1,-0.374,-0.401,0.912,25,40.0,40.6,"down","down","down",0.05,-0.543,-0.77],["동양","비금속광물제품",2024,"C",0,1,-0.129,"L",48.0,0.468,0.245,0.912,25,56.1,61.7,"down","flat","up",0.727,0.54,0.052],["삼천당제약","의약품",2023,"D",0,1,-0.131,"L",48.0,0.081,-0.325,1.527,10,41.9,52.0,"down","down","flat",0.021,-0.673,0.917],["제일연마","비금속광물제품",2022,"C",0,1,-0.124,"L",47.8,-0.518,-0.533,0.912,25,36.7,37.1,"down","down","down",-0.121,-0.796,-0.769],["엔씨소프트","출판",2022,"A",0,1,-0.125,"L",47.8,-0.779,0.086,-0.932,80,52.1,30.5,"up","flat","down",-0.168,-1.163,-1.21],["삼양홀딩스","금융",2024,"A",0,1,-0.122,"L",47.7,0.585,1.139,-0.932,80,78.5,64.6,"up","up","up",-0.236,1.304,0.96],["유한양행","의약품",2022,"B+",0,1,-0.119,"L",47.6,-0.081,0.343,-0.317,60,58.6,48.0,"flat","up","flat",-0.195,0.09,-0.1],["SK하이닉스","전자/반도체",2024,"B+",0,1,-0.115,"L",47.4,0.685,0.929,-0.317,60,73.2,67.1,"flat","up","up",0.003,1.045,1.233],["대상","식료품",2022,"B+",0,0,-0.115,"L",47.4,-0.435,-0.436,-0.317,60,null,39.1,"flat",null,"down",0.219,-0.756,-0.986],["대한제분","식료품",2024,"C",0,1,-0.114,"L",47.3,-0.431,-0.487,0.912,25,37.8,39.2,"down","down","down",-0.286,-0.426,-0.628],["현대자동차","기타운송장비",2023,"A",0,1,-0.111,"L",47.2,0.742,1.237,-0.932,80,80.9,68.6,"up","up","up",0.68,0.725,0.842],["롯데케미칼","화학/화학제품",2024,"A",0,1,-0.105,"L",47.0,0.955,1.391,-0.932,80,84.8,73.9,"up","up","up",0.038,1.715,1.417],["한국주철관공업","1차금속(철강)",2022,"D",0,1,-0.105,"L",46.9,-0.492,-0.829,1.527,10,29.3,37.7,"down","down","down",-0.295,-0.551,-0.697],["남양유업","식료품",2023,"B",0,1,-0.102,"L",46.8,-0.1,0.016,0.297,40,50.4,47.5,"flat","flat","flat",0.473,-0.28,-0.683],["SPC삼립","식료품",2022,"B",0,1,-0.102,"L",46.8,0.293,0.322,0.297,40,58.1,57.3,"flat","up","flat",0.085,0.578,0.283],["조흥","식료품",2022,"C",0,1,-0.1,"L",46.7,-0.116,-0.274,0.912,25,43.1,47.1,"down","flat","flat",-0.063,0.071,-0.374],["조흥","식료품",2023,"C",0,1,-0.097,"L",46.6,-0.102,-0.27,0.912,25,43.3,47.4,"down","flat","flat",0.44,-0.265,-0.663],["에스엘","기타운송장비",2024,"B",0,1,-0.097,"L",46.6,0.138,0.191,0.297,40,54.8,53.5,"flat","flat","flat",-0.146,0.333,0.323],["흥국화재","보험",2023,"B+",1,1,-0.093,"L",46.5,-0.42,-0.477,-0.317,60,38.1,39.5,"flat","down","down",0.206,-1.391,-0.283],["삼진제약","의약품",2024,"B",0,1,-0.092,"L",46.4,-0.509,-0.324,0.297,40,41.9,37.3,"flat","down","down",0.031,-0.511,-1.228],["현대해상","보험",2023,"A",1,1,-0.088,"L",46.2,0.057,1.543,-0.932,80,88.6,51.4,"up","up","flat",0.096,-0.411,0.472],["흥아해운","수상운송",2022,"C",0,1,-0.086,"L",46.1,-0.092,-0.286,0.912,25,42.8,47.7,"down","flat","flat",0.002,-0.334,0.024],["기아","기타운송장비",2023,"B",0,1,-0.081,"L",46.0,0.743,0.626,0.297,40,65.7,68.6,"flat","up","up",0.518,0.937,0.849],["현대차증권","금융보조",2022,"A",0,0,-0.077,"L",45.8,-0.822,0.366,-0.932,80,null,29.4,"up",null,"down",-0.777,-0.937,-0.769],["농심","식료품",2022,"C",0,1,-0.078,"L",45.8,0.059,-0.186,0.912,25,45.4,51.5,"down","flat","flat",0.124,0.261,-0.229],["흥국화재","보험",2022,"B+",1,0,-0.075,"L",45.7,-0.39,-0.477,-0.317,60,null,40.3,"flat",null,"down",0.132,-0.998,-0.477],["KG케미칼","화학/화학제품",2022,"D",0,1,-0.073,"L",45.6,0.784,0.094,1.527,10,52.4,69.6,"down","flat","up",0.116,1.341,1.116],["한화손해보험","보험",2024,"A",1,1,-0.074,"L",45.6,-0.592,-0.477,-0.932,80,38.1,35.2,"up","down","down",-0.483,-0.881,-0.45],["한국주철관공업","1차금속(철강)",2023,"D",0,1,-0.069,"L",45.4,-0.391,-0.829,1.527,10,29.3,40.2,"down","down","down",-0.366,-0.455,-0.359],["강남제비스코","화학/화학제품",2022,"C",0,1,-0.067,"L",45.3,-0.256,-0.456,0.912,25,38.6,43.6,"down","down","flat",-0.167,-0.022,-0.608],["한진","육상운송",2022,"B+",0,1,-0.062,"M",45.2,0.305,0.517,-0.317,60,62.9,57.6,"flat","up","up",0.28,0.084,0.561],["삼부토건","종합건설",2023,"C",0,1,-0.063,"M",45.2,-0.044,-0.299,0.912,25,42.5,48.9,"down","flat","flat",0.265,-0.115,-0.384],["태광산업","화학/화학제품",2023,"C",0,1,-0.064,"L",45.2,-0.324,-0.515,0.912,25,37.1,41.9,"down","down","down",-0.279,-0.338,-0.37],["롯데손해보험","보험",2022,"B+",1,0,-0.064,"L",45.2,-0.372,-0.477,-0.317,60,null,40.7,"flat",null,"down",-0.392,-1.124,0.407],["CJ","금융",2024,"A",0,1,-0.056,"M",44.9,0.492,0.921,-0.932,80,73.0,62.3,"up","up","up",-0.071,1.132,0.603],["하이트진로홀딩스","금융",2022,"B",0,1,-0.048,"M",44.6,0.076,0.034,0.297,40,50.8,51.9,"flat","flat","flat",0.091,0.305,-0.173],["KR모터스","가구",2024,"D",0,1,-0.049,"M",44.6,0.148,-0.454,1.527,10,38.6,53.7,"down","down","flat",-0.298,-0.723,1.613],["한화손해보험","보험",2023,"A",1,1,-0.044,"M",44.4,-0.543,-0.477,-0.932,80,38.1,36.4,"up","down","down",-0.274,-0.876,-0.569],["동진쎄미켐","화학/화학제품",2023,"B",0,1,-0.045,"M",44.4,-0.412,-0.352,0.297,40,41.2,39.7,"flat","down","down",-0.223,-0.152,-0.925],["남광토건","종합건설",2022,"C",0,1,-0.045,"M",44.4,-0.322,-0.555,0.912,25,36.1,42.0,"down","down","down",-0.202,-0.082,-0.721],["대한전선","기계",2024,"A",0,1,-0.042,"M",44.3,0.268,0.715,-0.932,80,67.9,56.7,"up","up","flat",-0.157,0.293,0.809],["세아베스틸지주","1차금속(철강)",2024,"A",0,1,-0.042,"M",44.3,0.06,0.555,-0.932,80,63.9,51.5,"up","up","flat",-0.702,0.638,0.497],["POSCO홀딩스","1차금속(철강)",2024,"A",0,1,-0.04,"M",44.2,1.018,1.295,-0.932,80,82.4,75.4,"up","up","up",-0.124,2.037,1.52],["시알홀딩스","비금속광물제품",2024,"C",0,1,-0.032,"M",43.9,-0.205,-0.493,0.912,25,37.7,44.9,"down","down","flat",-0.018,-0.258,-0.401],["일동홀딩스","의약품",2023,"A",0,1,-0.032,"M",43.9,-0.23,0.307,-0.932,80,57.7,44.3,"up","up","flat",-0.117,-0.38,-0.23],["현대홈쇼핑","소매",2022,"A",0,1,-0.029,"M",43.8,-0.085,0.413,-0.932,80,60.3,47.9,"up","up","flat",0.237,-0.45,-0.15],["대원강업","기타운송장비",2023,"C",0,1,-0.03,"M",43.8,-0.173,-0.473,0.912,25,38.2,45.7,"down","down","flat",0.311,-0.725,-0.267],["SPC삼립","식료품",2024,"B",0,1,-0.029,"M",43.7,0.168,0.062,0.297,40,51.5,54.2,"flat","flat","flat",0.256,0.345,-0.128],["CS홀딩스","금융",2024,"C",0,1,-0.026,"M",43.6,-0.841,-1.002,0.912,25,25.0,29.0,"down","down","down",-0.954,-0.637,-0.894],["SK네트웍스","도매",2022,"A",0,1,-0.02,"M",43.4,0.213,0.625,-0.932,80,65.6,55.3,"up","up","flat",-0.223,0.356,0.652],["셀트리온","의약품",2024,"A",0,1,-0.02,"M",43.4,-0.294,0.231,-0.932,80,55.8,42.7,"up","flat","flat",-0.025,-0.9,-0.045],["삼성화재해상보험","보험",2023,"A",1,1,-0.018,"M",43.3,-0.499,-0.477,-0.932,80,38.1,37.5,"up","down","down",-0.264,-0.723,-0.588],["한화손해보험","보험",2022,"A",1,0,-0.016,"M",43.2,-0.497,-0.477,-0.932,80,null,37.6,"up",null,"down",-0.28,-0.848,-0.434],["고려아연","1차금속(철강)",2022,"B",0,1,-0.017,"M",43.2,0.482,0.28,0.297,40,57.0,62.1,"flat","flat","up",0.304,0.824,0.378],["SGC에너지","전기/가스공급",2022,"B+",0,1,-0.006,"M",42.8,0.559,0.589,-0.317,60,64.7,64.0,"flat","up","up",-0.554,1.49,1.113],["한국앤컴퍼니","금융",2022,"B",0,1,-0.004,"M",42.7,0.229,0.054,0.297,40,51.4,55.7,"flat","flat","flat",0.045,0.209,0.494],["JW중외제약","의약품",2024,"B+",0,1,-0.004,"M",42.7,-0.612,-0.325,-0.317,60,41.9,34.7,"flat","down","down",-0.595,-0.62,-0.626],["삼성에스디에스","소프트웨어",2022,"A",0,1,-0.005,"M",42.7,0.281,0.645,-0.932,80,66.1,57.0,"up","up","flat",0.449,-0.017,0.357],["동진쎄미켐","화학/화학제품",2024,"B",0,1,-0.002,"M",42.6,-0.331,-0.386,0.297,40,40.4,41.7,"flat","down","down",-0.202,-0.055,-0.778],["KG케미칼","화학/화학제품",2024,"C",0,1,-0.002,"M",42.6,0.654,0.108,0.912,25,52.7,66.4,"down","flat","up",0.232,1.344,0.526],["한화","화학/화학제품",2023,"B+",0,1,-0.002,"M",42.6,0.813,0.779,-0.317,60,69.5,70.3,"flat","up","up",0.359,1.367,0.865],["LS네트웍스","도매",2024,"B+",0,1,-0.002,"M",42.6,0.031,0.17,-0.317,60,54.3,50.8,"flat","flat","flat",0.081,-0.184,0.178],["GS글로벌","도매",2024,"B+",0,1,0.004,"M",42.4,-0.14,0.023,-0.317,60,50.6,46.5,"flat","flat","flat",-0.009,-0.333,-0.122],["세아베스틸지주","1차금속(철강)",2023,"A",0,1,0.009,"M",42.2,0.027,0.416,-0.932,80,60.4,50.7,"up","up","flat",-0.989,0.661,0.749],["가온전선","기계",2024,"B",0,1,0.007,"M",42.2,0.12,-0.054,0.297,40,48.7,53.0,"flat","flat","flat",-0.252,0.296,0.441],["대동","자동차",2024,"B+",0,1,0.012,"M",42.0,0.395,0.421,-0.317,60,60.5,59.9,"flat","up","up",0.596,0.672,-0.15],["조흥","식료품",2024,"B",0,1,0.012,"M",42.0,-0.201,-0.315,0.297,40,42.1,45.0,"flat","down","flat",0.072,-0.129,-0.639],["흥아해운","수상운송",2023,"B",0,1,0.011,"M",42.0,-0.164,-0.285,0.297,40,42.9,45.9,"flat","flat","flat",0.031,-0.418,-0.172],["HL D&I","종합건설",2022,"B+",0,1,0.027,"M",41.4,0.684,0.612,-0.317,60,65.3,67.1,"flat","up","up",-0.138,1.354,1.109],["대원강업","기타운송장비",2022,"C",0,1,0.027,"M",41.4,-0.01,-0.473,0.912,25,38.2,49.7,"down","down","flat",0.36,-0.685,0.172],["KG케미칼","화학/화학제품",2023,"C",0,1,0.029,"M",41.3,0.856,0.195,0.912,25,54.9,71.4,"down","flat","up",0.318,1.381,1.047],["LS네트웍스","도매",2023,"B+",0,1,0.031,"M",41.2,0.201,0.229,-0.317,60,55.7,55.0,"flat","flat","flat",0.533,-0.145,0.105],["CJ ENM","방송업",2024,"A",0,1,0.034,"M",41.1,-0.406,0.024,-0.932,80,50.6,39.9,"up","flat","down",-0.475,-0.516,-0.203],["아세아","전문서비스",2023,"A",0,1,0.039,"M",40.9,0.463,0.687,-0.932,80,67.2,61.6,"up","up","up",-0.172,1.408,0.364],["하이트진로홀딩스","금융",2024,"B+",0,1,0.045,"M",40.6,-0.187,-0.104,-0.317,60,47.4,45.3,"flat","flat","flat",-0.08,-0.06,-0.456],["기아","기타운송장비",2022,"B+",0,1,0.049,"M",40.5,0.744,0.61,-0.317,60,65.3,68.6,"flat","up","up",0.551,1.008,0.737],["BNK금융지주","금융",2022,"A",1,0,0.05,"M",40.4,-0.521,-0.88,-0.932,80,null,37.0,"up",null,"down",-0.351,-0.908,-0.36],["아세아","전문서비스",2022,"B+",0,1,0.054,"M",40.3,0.385,0.321,-0.317,60,58.0,59.6,"flat","up","up",-0.246,1.304,0.309],["셀트리온","의약품",2022,"B",0,1,0.053,"M",40.3,-0.376,-0.543,0.297,40,36.4,40.6,"flat","down","down",-0.219,-0.761,-0.201],["아세아","전문서비스",2024,"A",0,1,0.053,"M",40.3,0.389,0.6,-0.932,80,65.0,59.7,"up","up","up",-0.282,1.39,0.282],["SK하이닉스","전자/반도체",2023,"A",0,1,0.054,"M",40.2,0.545,0.717,-0.932,80,67.9,63.6,"up","up","up",0.099,0.833,0.851],["농심","식료품",2024,"B",0,1,0.06,"M",40.0,0.266,-0.058,0.297,40,48.5,56.6,"flat","flat","flat",0.298,0.369,0.12],["케이티","통신업",2024,"A+",0,1,0.064,"M",39.8,0.487,0.924,-1.547,100,73.1,62.2,"up","up","up",0.226,0.54,0.781],["POSCO홀딩스","1차금속(철강)",2023,"A+",0,1,0.064,"M",39.8,1.049,1.362,-1.547,100,84.0,76.2,"up","up","up",-0.116,1.978,1.675],["에스엘","기타운송장비",2023,"B+",0,1,0.068,"M",39.7,0.124,0.086,-0.317,60,52.2,53.1,"flat","flat","flat",-0.209,0.436,0.255],["하이트진로홀딩스","금융",2023,"B+",0,1,0.068,"M",39.7,-0.16,-0.133,-0.317,60,46.7,46.0,"flat","flat","flat",-0.214,0.221,-0.468],["CJ대한통운","육상운송",2022,"B+",0,1,0.067,"M",39.7,0.145,0.105,-0.317,60,52.6,53.6,"flat","flat","flat",0.209,0.2,0.003],["태광산업","화학/화학제품",2024,"B",0,1,0.069,"M",39.6,-0.384,-0.584,0.297,40,35.4,40.4,"flat","down","down",-0.32,-0.411,-0.444],["기아","기타운송장비",2024,"A",0,1,0.073,"M",39.5,0.648,0.756,-0.932,80,68.9,66.2,"up","up","up",0.455,0.85,0.702],["동국홀딩스","금융",2023,"A",0,1,0.072,"M",39.5,-0.104,0.173,-0.932,80,54.3,47.4,"up","flat","flat",-0.202,0.179,-0.256],["현대홈쇼핑","소매",2023,"A",0,1,0.072,"M",39.5,0.102,0.334,-0.932,80,58.3,52.6,"up","up","flat",0.239,0.049,-0.027],["동진쎄미켐","화학/화학제품",2022,"C",0,1,0.08,"M",39.2,-0.406,-0.898,0.912,25,27.5,39.9,"down","down","down",-0.23,-0.139,-0.907],["엔씨소프트","출판",2024,"A",0,1,0.089,"M",38.8,0.147,0.329,-0.932,80,58.2,53.7,"up","up","flat",0.215,-0.303,0.505],["넥센타이어","고무/플라스틱",2023,"B+",0,1,0.091,"M",38.7,0.063,-0.011,-0.317,60,49.7,51.6,"flat","flat","flat",0.496,0.119,-0.57],["현대위아","기타운송장비",2024,"A+",0,1,0.096,"M",38.5,0.23,0.653,-1.547,100,66.3,55.8,"up","up","flat",0.176,0.247,0.287],["DB하이텍","전자/반도체",2022,"B",0,1,0.095,"M",38.5,0.121,-0.248,0.297,40,43.8,53.0,"flat","flat","flat",0.135,-0.397,0.622],["한국앤컴퍼니","금융",2023,"B+",0,1,0.097,"M",38.4,0.038,-0.044,-0.317,60,48.9,51.0,"flat","flat","flat",0.108,-0.109,0.092],["LG화학","화학/화학제품",2022,"B",0,1,0.103,"M",38.2,0.405,-0.046,0.297,40,48.8,60.1,"flat","flat","up",-0.105,0.866,0.625],["두산","전자/반도체",2022,"B+",0,1,0.105,"M",38.1,0.827,0.55,-0.317,60,63.7,70.7,"flat","up","up",-0.28,1.345,1.784],["S-Oil","석유정제",2023,"A+",0,1,0.108,"M",38.0,0.643,0.947,-1.547,100,73.7,66.1,"up","up","up",-0.068,1.029,1.205],["현대위아","기타운송장비",2022,"A",0,1,0.108,"M",38.0,0.461,0.534,-0.932,80,63.3,61.5,"up","up","up",-0.155,0.611,1.134],["BNK금융지주","금융",2024,"A",1,1,0.106,"M",38.0,-0.427,-0.882,-0.932,80,28.0,39.3,"up","down","down",-0.236,-0.733,-0.377],["카카오","정보서비스",2022,"A",0,1,0.11,"M",37.9,0.734,0.741,-0.932,80,68.5,68.3,"up","up","up",0.549,0.814,0.9],["이수화학","화학/화학제품",2024,"B",0,1,0.114,"M",37.7,0.292,-0.159,0.297,40,46.0,57.3,"flat","flat","flat",0.075,0.602,0.272],["BGF리테일","소매",2023,"A",0,1,0.117,"M",37.6,-0.49,-0.227,-0.932,80,44.3,37.7,"up","flat","down",0.032,-0.805,-0.873],["시알홀딩스","비금속광물제품",2023,"D",0,1,0.119,"M",37.5,-0.063,-0.992,1.527,10,25.2,48.4,"down","down","flat",0.133,-0.452,0.064],["BNK금융지주","금융",2023,"A",1,1,0.123,"M",37.4,-0.163,-0.169,-0.932,80,45.8,45.9,"up","flat","flat",-0.24,-0.388,0.166],["SK네트웍스","도매",2024,"A+",0,1,0.121,"M",37.4,0.002,0.419,-1.547,100,60.5,50.0,"up","up","flat",0.323,-0.242,-0.183],["BGF리테일","소매",2022,"A",0,1,0.124,"M",37.3,-0.441,-0.205,-0.932,80,44.9,39.0,"up","flat","down",0.048,-0.753,-0.781],["CJ대한통운","육상운송",2023,"A",0,1,0.124,"M",37.3,0.224,0.312,-0.932,80,57.8,55.6,"up","up","flat",-0.036,0.596,0.197],["HL D&I","종합건설",2023,"A",0,1,0.128,"M",37.1,0.72,0.69,-0.932,80,67.3,68.0,"up","up","up",0.041,1.289,1.056],["두산","전자/반도체",2024,"A",0,1,0.131,"M",37.0,0.886,0.813,-0.932,80,70.3,72.1,"up","up","up",-0.169,1.494,1.683],["기업은행","금융",2024,"B+",1,1,0.133,"M",36.9,-0.096,-0.637,-0.317,60,34.1,47.6,"flat","down","flat",-0.192,-0.255,0.191],["대한전선","기계",2023,"A",0,1,0.142,"M",36.6,0.141,0.21,-0.932,80,55.2,53.5,"up","flat","flat",-0.107,0.121,0.494],["깨끗한나라","펄프/제지",2022,"C",0,1,0.144,"M",36.5,0.354,-0.45,0.912,25,38.8,58.9,"down","down","up",0.033,0.476,0.661],["대상","식료품",2024,"A",0,0,0.142,"M",36.5,-0.442,-0.84,-0.932,80,null,39.0,"up",null,"down",-0.0,-0.539,-0.934],["두산","전자/반도체",2023,"B+",0,1,0.144,"M",36.4,0.887,0.51,-0.317,60,62.7,72.2,"flat","up","up",-0.203,1.396,1.829],["현대위아","기타운송장비",2023,"A+",0,1,0.152,"M",36.1,0.288,0.574,-1.547,100,64.3,57.2,"up","up","flat",0.038,0.421,0.488],["한화","화학/화학제품",2024,"B+",0,1,0.152,"M",36.1,1.008,0.588,-0.317,60,64.7,75.2,"flat","up","up",-0.059,2.036,1.405],["현대홈쇼핑","소매",2024,"A+",0,1,0.155,"M",36.0,0.111,0.429,-1.547,100,60.7,52.8,"up","up","flat",0.061,0.155,0.132],["에스엘","기타운송장비",2022,"B+",0,1,0.154,"M",36.0,0.063,-0.152,-0.317,60,46.2,51.6,"flat","flat","flat",-0.117,0.164,0.202],["농심","식료품",2023,"B+",0,1,0.158,"M",35.9,0.22,-0.038,-0.317,60,49.1,55.5,"flat","flat","flat",0.253,0.322,0.074],["기업은행","금융",2023,"A",1,1,0.157,"M",35.9,-0.085,-0.108,-0.932,80,47.3,47.9,"up","flat","flat",-0.139,-0.076,-0.022],["BGF리테일","소매",2024,"A",0,1,0.156,"M",35.9,-0.383,-0.231,-0.932,80,44.2,40.4,"up","flat","down",0.095,-0.649,-0.756],["아모레퍼시픽홀딩스","화학/화학제품",2022,"A",0,1,0.159,"M",35.8,0.937,0.79,-0.932,80,69.8,73.4,"up","up","up",0.831,1.141,0.874],["영풍","1차금속(철강)",2022,"B",0,1,0.168,"M",35.5,0.58,-0.053,0.297,40,48.7,64.5,"flat","flat","up",-0.035,0.944,1.037],["우리금융지주","금융",2022,"A",1,0,0.167,"M",35.5,0.102,0.4,-0.932,80,null,52.5,"up",null,"flat",0.214,0.039,0.016],["GS리테일","소매",2022,"A",0,1,0.167,"M",35.5,-0.158,-0.08,-0.932,80,48.0,46.1,"up","flat","flat",-0.127,-0.279,-0.078],["LX인터내셔널","도매",2023,"B+",0,1,0.168,"M",35.4,0.268,-0.024,-0.317,60,49.4,56.7,"flat","flat","flat",0.414,0.275,0.066],["POSCO홀딩스","1차금속(철강)",2022,"A",0,1,0.175,"M",35.1,0.89,0.716,-0.932,80,67.9,72.2,"up","up","up",-0.269,1.998,1.326],["삼성에스디에스","소프트웨어",2023,"A",0,1,0.178,"M",35.0,0.25,0.213,-0.932,80,55.3,56.2,"up","flat","flat",0.529,-0.074,0.202],["유수홀딩스","전문서비스",2023,"B+",0,1,0.186,"M",34.7,-0.6,-0.738,-0.317,60,31.5,35.0,"flat","down","down",-0.117,-0.932,-0.911],["동국홀딩스","금융",2024,"A",0,1,0.186,"M",34.7,0.158,0.125,-0.932,80,53.1,54.0,"up","flat","flat",0.157,0.2,0.118],["GS리테일","소매",2023,"A",0,1,0.185,"M",34.7,-0.102,-0.076,-0.932,80,48.1,47.4,"up","flat","flat",0.086,-0.291,-0.163],["현대로템","가구",2022,"A",0,1,0.188,"M",34.6,0.777,0.6,-0.932,80,65.0,69.4,"up","up","up",0.217,1.084,1.219],["현대로템","가구",2023,"A",0,1,0.187,"M",34.6,0.679,0.526,-0.932,80,63.2,67.0,"up","up","up",-0.162,1.032,1.446],["JW중외제약","의약품",2023,"B+",0,1,0.193,"M",34.4,-0.466,-0.651,-0.317,60,33.7,38.3,"flat","down","down",-0.403,-0.602,-0.415],["오리온홀딩스","금융",2022,"A",0,1,0.192,"M",34.4,-0.487,-0.392,-0.932,80,40.2,37.8,"up","down","down",-0.225,-0.571,-0.753],["영풍","1차금속(철강)",2024,"B",0,1,0.192,"M",34.4,0.305,-0.321,0.297,40,42.0,57.6,"flat","down","up",0.335,0.34,0.229],["현대건설","종합건설",2024,"A",0,1,0.199,"M",34.2,0.546,0.398,-0.932,80,59.9,63.6,"up","up","up",0.077,0.921,0.796],["삼성화재해상보험","보험",2022,"A",1,0,0.202,"M",34.0,-0.133,-0.477,-0.932,80,null,46.7,"up",null,"flat",0.217,-0.831,0.098],["현대건설","종합건설",2023,"A",0,1,0.206,"H",33.9,0.328,0.212,-0.932,80,55.3,58.2,"up","flat","up",-0.021,0.664,0.456],["NAVER","정보서비스",2024,"A",0,1,0.204,"M",33.9,-0.445,-0.386,-0.932,80,40.4,38.9,"up","down","down",-0.075,-0.9,-0.484],["대원강업","기타운송장비",2024,"B+",0,1,0.208,"H",33.8,-0.195,-0.473,-0.317,60,38.2,45.1,"flat","down","flat",0.288,-0.721,-0.313],["삼화페인트공업","화학/화학제품",2022,"B",0,1,0.21,"H",33.7,0.247,-0.407,0.297,40,39.8,56.2,"flat","down","flat",0.227,0.506,0.016],["가온전선","기계",2023,"B+",0,1,0.212,"H",33.6,0.099,-0.253,-0.317,60,43.7,52.5,"flat","flat","flat",-0.285,0.266,0.445],["우리금융지주","금융",2023,"A",1,1,0.214,"H",33.5,-0.126,-0.515,-0.932,80,37.1,46.8,"up","down","flat",0.099,-0.348,-0.205],["오리온홀딩스","금융",2024,"A",0,1,0.219,"H",33.3,-0.41,-0.391,-0.932,80,40.2,39.7,"up","down","down",0.03,-0.676,-0.732],["오리온홀딩스","금융",2023,"A",0,1,0.221,"H",33.2,-0.398,-0.385,-0.932,80,40.4,40.1,"up","down","down",0.04,-0.708,-0.67],["현대두산인프라코어","자동차",2022,"B+",0,1,0.224,"H",33.1,0.504,0.036,-0.317,60,50.9,62.6,"flat","flat","up",0.416,0.84,0.287],["하나금융지주","금융",2023,"A",1,1,0.226,"H",33.0,-0.012,-0.233,-0.932,80,44.2,49.7,"up","flat","flat",0.041,-0.279,0.184],["LG화학","화학/화학제품",2024,"B+",0,1,0.227,"H",32.9,0.392,-0.06,-0.317,60,48.5,59.8,"flat","flat","up",-0.205,0.969,0.61],["카카오","정보서비스",2024,"A",0,1,0.231,"H",32.8,0.512,0.299,-0.932,80,57.5,62.8,"up","flat","up",0.476,0.541,0.531],["동아쏘시오홀딩스","금융",2022,"A",0,1,0.233,"H",32.7,-0.377,-0.397,-0.932,80,40.1,40.6,"up","down","down",-0.171,-0.499,-0.53],["포스코케미칼","기계",2022,"B+",0,1,0.236,"H",32.6,0.471,-0.016,-0.317,60,49.6,61.8,"flat","flat","up",-0.183,1.018,0.798],["기업은행","금융",2022,"A",1,0,0.235,"H",32.6,-0.047,-0.388,-0.932,80,null,48.8,"up",null,"flat",-0.147,-0.141,0.178],["GS리테일","소매",2024,"A+",0,1,0.241,"H",32.4,-0.274,-0.062,-1.547,100,48.5,43.2,"up","flat","flat",0.02,-0.659,-0.279],["현대로템","가구",2024,"A+",0,1,0.24,"H",32.4,0.736,0.727,-1.547,100,68.2,68.4,"up","up","up",-0.139,1.27,1.368],["아모레퍼시픽홀딩스","화학/화학제품",2023,"A",0,1,0.243,"H",32.3,-0.467,-0.49,-0.932,80,37.8,38.3,"up","down","down",-0.211,-0.611,-0.665],["DL","화학/화학제품",2022,"A",0,1,0.246,"H",32.2,0.948,0.605,-0.932,80,65.1,73.7,"up","up","up",0.087,1.696,1.348],["현대건설","종합건설",2022,"A",0,1,0.246,"H",32.2,0.408,0.186,-0.932,80,54.6,60.2,"up","flat","up",0.196,0.716,0.384],["하나금융지주","금융",2024,"A",1,1,0.246,"H",32.2,-0.036,-0.406,-0.932,80,39.9,49.1,"up","down","flat",-0.087,-0.287,0.282],["하나금융지주","금융",2022,"A",1,0,0.244,"H",32.2,-0.013,-0.328,-0.932,80,null,49.7,"up",null,"flat",0.01,-0.239,0.181],["포스코퓨처엠","기계",2023,"A",0,1,0.248,"H",32.1,0.532,0.276,-0.932,80,56.9,63.3,"up","flat","up",-0.321,0.933,1.268],["한화","화학/화학제품",2022,"A",0,1,0.251,"H",32.0,0.951,0.597,-0.932,80,64.9,73.8,"up","up","up",-0.32,2.007,1.589],["카카오","정보서비스",2023,"A",0,1,0.258,"H",31.7,-0.485,-0.536,-0.932,80,36.6,37.9,"up","down","down",-0.078,-0.828,-0.687],["동아쏘시오홀딩스","금융",2023,"A",0,1,0.256,"H",31.7,-0.324,-0.407,-0.932,80,39.8,41.9,"up","down","down",-0.196,-0.376,-0.442],["유수홀딩스","전문서비스",2022,"B+",0,1,0.259,"H",31.6,-0.392,-0.738,-0.317,60,31.5,40.2,"flat","down","down",-0.148,-0.504,-0.604],["깨끗한나라","펄프/제지",2023,"B+",0,1,0.262,"H",31.5,0.057,-0.396,-0.317,60,40.1,51.4,"flat","down","flat",0.408,-0.075,-0.277],["DB하이텍","전자/반도체",2024,"C",0,1,0.261,"H",31.5,-0.145,-1.099,0.912,25,22.5,46.4,"down","down","flat",0.051,-0.519,-0.033],["LX인터내셔널","도매",2024,"A",0,1,0.266,"H",31.3,0.173,-0.042,-0.932,80,49.0,54.3,"up","flat","flat",0.504,0.019,-0.114],["KB금융","금융",2024,"A",1,1,0.271,"H",31.1,0.028,-0.338,-0.932,80,41.5,50.7,"up","down","flat",-0.162,-0.026,0.334],["DL","화학/화학제품",2023,"A",0,1,0.275,"H",31.0,1.055,0.625,-0.932,80,65.6,76.4,"up","up","up",0.374,1.575,1.443],["한진","육상운송",2023,"A",0,1,0.274,"H",31.0,0.333,0.065,-0.932,80,51.6,58.3,"up","flat","up",0.293,0.121,0.598],["KB금융","금융",2023,"A+",1,1,0.273,"H",31.0,-0.167,-0.319,-1.547,100,42.0,45.8,"up","down","flat",0.464,-0.545,-0.629],["HL D&I","종합건설",2024,"A+",0,1,0.273,"H",31.0,0.664,0.597,-1.547,100,64.9,66.6,"up","up","up",-0.072,1.28,1.028],["강남제비스코","화학/화학제품",2024,"B+",0,1,0.279,"H",30.8,-0.089,-0.548,-0.317,60,36.3,47.8,"flat","down","flat",0.256,-0.18,-0.459],["강남제비스코","화학/화학제품",2023,"B+",0,1,0.278,"H",30.8,-0.061,-0.525,-0.317,60,36.9,48.5,"flat","down","flat",0.263,-0.145,-0.41],["DL","화학/화학제품",2024,"A",0,1,0.28,"H",30.7,1.006,0.575,-0.932,80,64.4,75.1,"up","up","up",0.203,1.581,1.501],["HD현대인프라코어","자동차",2023,"A",0,1,0.286,"H",30.5,0.492,0.162,-0.932,80,54.0,62.3,"up","flat","up",0.491,0.684,0.302],["S-Oil","석유정제",2022,"A",0,1,0.287,"H",30.4,0.561,0.213,-0.932,80,55.3,64.0,"up","flat","up",0.056,0.782,1.014],["아모레퍼시픽홀딩스","화학/화학제품",2024,"A+",0,1,0.293,"H",30.2,-0.809,-0.594,-1.547,100,35.2,29.8,"up","down","down",-0.324,-1.116,-1.148],["포스코퓨처엠","기계",2024,"A+",0,1,0.295,"H",30.1,0.614,0.509,-1.547,100,62.7,65.4,"up","up","up",-0.206,1.094,1.228],["SK이노베이션","석유정제",2022,"A",0,1,0.295,"H",30.1,0.861,0.429,-0.932,80,60.7,71.5,"up","up","up",-0.029,1.635,1.272],["SGC에너지","전기/가스공급",2023,"B+",0,1,0.297,"H",30.0,0.537,-0.1,-0.317,60,47.5,63.4,"flat","flat","up",-0.588,1.495,1.079],["영풍","1차금속(철강)",2023,"B+",0,1,0.296,"H",30.0,0.449,-0.168,-0.317,60,45.8,61.2,"flat","flat","up",-0.219,0.939,0.85],["KB금융지주","금융",2022,"A+",1,0,0.304,"H",29.7,-0.107,-0.296,-1.547,100,null,47.3,"up",null,"flat",0.281,-0.407,-0.326],["삼화페인트공업","화학/화학제품",2024,"B+",0,1,0.318,"H",29.1,0.35,-0.294,-0.317,60,42.6,58.8,"flat","flat","up",0.257,0.443,0.381],["HD현대인프라코어","자동차",2024,"A+",0,1,0.318,"H",29.1,0.365,0.264,-1.547,100,56.6,59.1,"up","flat","up",0.474,0.455,0.13],["DB하이텍","전자/반도체",2023,"B+",0,1,0.335,"H",28.4,-0.298,-0.836,-0.317,60,29.1,42.6,"flat","down","flat",-0.292,-0.227,-0.377],["대상","식료품",2023,"A",0,1,0.334,"H",28.4,-0.463,-0.688,-0.932,80,32.8,38.4,"up","down","down",0.169,-0.859,-0.909],["동아쏘시오홀딩스","금융",2024,"A+",0,1,0.349,"H",27.8,-0.512,-0.487,-1.547,100,37.8,37.2,"up","down","down",-0.436,-0.614,-0.513],["케이티","통신업",2022,"A",0,1,0.352,"H",27.7,0.57,0.075,-0.932,80,51.9,64.3,"up","flat","up",0.154,0.629,1.066],["삼화페인트공업","화학/화학제품",2023,"B+",0,1,0.351,"H",27.7,0.418,-0.314,-0.317,60,42.1,60.5,"flat","down","up",0.378,0.519,0.371],["LX인터내셔널","도매",2022,"A",0,1,0.355,"H",27.6,0.091,-0.304,-0.932,80,42.4,52.3,"up","down","flat",0.124,-0.033,0.171],["삼성에스디에스","소프트웨어",2024,"A",0,1,0.357,"H",27.5,-0.028,-0.4,-0.932,80,40.0,49.3,"up","down","flat",0.372,-0.63,0.042],["넥센타이어","고무/플라스틱",2022,"B+",0,1,0.366,"H",27.1,0.287,-0.449,-0.317,60,38.8,57.2,"flat","down","flat",0.752,0.18,-0.228],["NAVER","정보서비스",2022,"A",0,1,0.38,"H",26.5,0.63,0.06,-0.932,80,51.5,65.8,"up","flat","up",0.526,0.387,1.012],["LG화학","화학/화학제품",2023,"A",0,1,0.385,"H",26.3,0.587,0.015,-0.932,80,50.4,64.7,"up","flat","up",-0.023,1.057,0.929],["신한지주","금융",2024,"A+",1,1,0.388,"H",26.2,0.057,-0.224,-1.547,100,44.4,51.4,"up","flat","flat",0.053,-0.019,0.139],["NAVER","정보서비스",2023,"A+",0,1,0.394,"H",25.9,0.573,0.257,-1.547,100,56.4,64.3,"up","flat","up",0.465,0.388,0.9],["케이티","통신업",2023,"A",0,1,0.393,"H",25.9,0.553,-0.03,-0.932,80,49.3,63.8,"up","flat","up",0.171,0.589,1.026],["신한지주","금융",2022,"A+",1,0,0.397,"H",25.8,0.081,-0.198,-1.547,100,null,52.0,"up",null,"flat",0.06,-0.046,0.234],["노루홀딩스","금융",2023,"A",0,1,0.411,"H",25.2,0.249,-0.306,-0.932,80,42.4,56.2,"up","down","flat",0.632,0.073,-0.086],["CJ프레시웨이","도매",2022,"A",0,1,0.417,"H",24.9,-0.148,-0.628,-0.932,80,34.3,46.3,"up","down","flat",0.231,-0.605,-0.195],["신한지주","금융",2023,"A+",1,1,0.417,"H",24.9,0.015,-0.494,-1.547,100,37.7,50.4,"up","down","flat",-0.084,0.013,0.15],["CJ프레시웨이","도매",2023,"A",0,1,0.426,"H",24.6,-0.115,-0.622,-0.932,80,34.4,47.1,"up","down","flat",0.226,-0.57,-0.113],["CJ프레시웨이","도매",2024,"A",0,1,0.424,"H",24.6,-0.116,-0.618,-0.932,80,34.5,47.1,"up","down","flat",0.274,-0.595,-0.157],["고려아연","1차금속(철강)",2024,"B+",0,0,0.429,"H",24.5,0.511,0.523,-0.317,60,null,62.8,"flat",null,"up",-0.445,1.331,0.965],["노루홀딩스","금융",2022,"A",0,1,0.429,"H",24.4,0.29,-0.314,-0.932,80,42.1,57.2,"up","down","flat",0.575,0.099,0.102],["대한전선","기계",2022,"A",0,1,0.439,"H",24.0,0.244,-0.372,-0.932,80,40.7,56.1,"up","down","flat",0.143,0.24,0.384],["SGC에너지","전기/가스공급",2024,"B",0,1,0.449,"H",23.6,0.586,-0.673,0.297,40,33.2,64.6,"flat","down","up",-0.511,1.533,1.102],["S-Oil","석유정제",2024,"A",0,1,0.547,"H",19.4,0.626,-0.316,-0.932,80,42.1,65.6,"up","down","up",0.059,0.968,1.038],["노루홀딩스","금융",2024,"A",0,1,0.569,"H",18.5,0.265,-0.644,-0.932,80,33.9,56.6,"up","down","flat",0.585,0.121,-0.019],["금호전기","기계",2023,"D",0,1,0.61,"H",16.8,-0.549,-2.461,1.527,10,0,36.3,"down","down","down",-0.448,-0.546,-0.688],["SK이노베이션","석유정제",2023,"A+",0,1,1.009,"H",0.0,0.373,-1.264,-1.547,100,18.4,59.3,"up","down","up",0.087,0.633,0.495]];
+const F={name:0,ind:1,yr:2,kcgs:3,fin:4,cap:5,gw:6,risk:7,cons:8,l1:9,l2:10,l3:11,ss:12,as:13,ns:14,ds:15,da:16,dn:17,seed:18,cont:19,sem:20};
+
+const rL={H:'High Risk',M:'Medium Risk',L:'Low Risk'};
+const rC={H:'#FF2D78',M:'#C9810D',L:'#2F4BF0'};
+const rBC={H:'risk-H',M:'risk-M',L:'risk-L'};
+function fmt(v,d){d=d===undefined?1:d;return v==null?'—':v.toFixed(d);}
+function fmtP(v){return v==null?'—':Math.round(v);}
+
+// ── NAV + VIEW ──
+var nav=document.getElementById('mainNav');
+window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>10);});
+function go(v){
+  document.querySelectorAll('.view').forEach(function(el){el.classList.remove('active');});
+  document.getElementById('v-'+v).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.toggle('on',b.dataset.v===v);});
+  window.scrollTo({top:0,behavior:'instant'});
+  runReveal();
+}
+
+// ── REVEAL ──
+var _io;
+function runReveal(){
+  if(_io)_io.disconnect();
+  _io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');_io.unobserve(e.target);}});
+  },{threshold:.1});
+  document.querySelectorAll('.view.active .reveal').forEach(function(el,i){
+    el.classList.remove('in');el.style.transitionDelay=(i%5*55)+'ms';_io.observe(el);
+  });
+}
+setTimeout(runReveal,100);
+
+// ── DIAG SEARCH ──
+var _dt=null,_currentDiagIdx=-1;
+function diagSuggest(){
+  clearTimeout(_dt);
+  _dt=setTimeout(function(){
+    var q=document.getElementById('diagSearch').value.trim();
+    var sug=document.getElementById('diagSuggest');
+    if(!q){sug.style.display='none';return;}
+    var m=D.filter(function(r){return r[F.name].indexOf(q)>=0;}).slice(0,9);
+    if(!m.length){sug.style.display='none';return;}
+    sug.innerHTML=m.map(function(r){
+      var idx=D.indexOf(r);
+      return '<div class="sug-item" onclick="pickDemoIdx('+idx+');closeDiagSug()">'+r[F.name]+'<span>'+r[F.yr]+' · '+r[F.ind]+'</span></div>';
+    }).join('');
+    sug.style.display='block';
+  },110);
+}
+function closeDiagSug(){document.getElementById('diagSuggest').style.display='none';}
+document.addEventListener('click',function(e){
+  var w=document.getElementById('diagSearchWrap');
+  if(w&&!w.contains(e.target))closeDiagSug();
+});
+function diagRun(){
+  closeDiagSug();
+  var q=document.getElementById('diagSearch').value.trim();
+  if(!q)return;
+  var m=D.filter(function(r){return r[F.name].indexOf(q)>=0;});
+  if(!m.length){alert('"'+q+'" 검색 결과 없음');return;}
+  m.sort(function(a,b){return b[F.yr]-a[F.yr];});
+  showCompany(D.indexOf(m[0]));
+}
+function pickDemo(name){
+  document.getElementById('diagSearch').value=name;
+  var m=D.filter(function(r){return r[F.name]===name;});
+  m.sort(function(a,b){return b[F.yr]-a[F.yr];});
+  if(m.length)showCompany(D.indexOf(m[0]));
+  else alert(name+' 데이터 없음');
+}
+function pickDemoIdx(idx){
+  document.getElementById('diagSearch').value=D[idx][F.name];
+  showCompany(idx);
+}
+
+function showCompany(idx){
+  _currentDiagIdx=idx;
+  var r=D[idx];
+  var el=document.getElementById('coCard');
+  el.style.display='block';
+  var isNC=r[F.cap]===0,isFin=r[F.fin]===1;
+  var cons=r[F.cons],risk=r[F.risk],gc=rC[risk];
+  var l1=r[F.l1],l2=r[F.l2],l3=r[F.l3];
+  var ss=r[F.ss],as_=r[13],ns=r[F.ns];
+  var seed=r[F.seed],cont=r[F.cont],sem=r[F.sem];
+  var ds=r[F.ds],da=r[F.da],dn=r[F.dn];
+
+  // 같은 기업 모든 연도
+  var allYrs=D.filter(function(x){return x[F.name]===r[F.name];})
+              .sort(function(a,b){return a[F.yr]-b[F.yr];});
+
+  // ─ 트렌드
+  function calcTrend(yrs){
+    if(yrs.length<2)return{label:'단일 연도',icon:'—',color:'#9AA3B5'};
+    var sc=yrs.map(function(x){return x[F.cons]||0;});
+    var diff=sc[sc.length-1]-sc[0],vol=Math.max.apply(null,sc)-Math.min.apply(null,sc);
+    if(diff>12)return{label:'꾸준히 개선 중',icon:'↗',color:'#0E9F6E'};
+    if(diff<-12)return{label:'하락 추세 주의',icon:'↘',color:'#FF2D78'};
+    if(vol>22)return{label:'변동이 큰 편',icon:'↔',color:'#C9810D'};
+    return{label:'안정적 유지',icon:'→',color:'#2F4BF0'};
+  }
+  var trend=calcTrend(allYrs);
+
+  var allR=allYrs.map(function(x){return x[F.risk];});
+  var reliMsg=allR.every(function(x){return x==='H';})?
+    '조사한 전 기간 동안 신호 불일치가 지속됩니다. 투자 판단에 신중함이 필요합니다.':
+    allR.every(function(x){return x==='L';})?
+    '전 기간 ESG 신호가 일관되게 나타납니다. 비교적 신뢰할 수 있는 ESG 행보입니다.':
+    '연도에 따라 신호 일관성이 다릅니다. 최근 추세를 함께 종합적으로 판단하세요.';
+
+  var trendRows=allYrs.map(function(x,i){
+    var sc=fmtP(x[F.cons]),pct=Math.round(x[F.cons]||0),col=rC[x[F.risk]];
+    var isCur=(x===r);
+    var delta=i>0?Math.round((x[F.cons]||0)-(allYrs[i-1][F.cons]||0)):null;
+    var ds2=delta!=null?(delta>0?'+'+delta:''+delta):'';
+    var dc=delta!=null?(delta>0?'#0E9F6E':delta<0?'#FF2D78':'#9AA3B5'):'';
+    return '<div class="trend-row">'+
+      '<span class="trend-year">'+x[F.yr]+(isCur?'<em class="now-tag">현재</em>':'')+'</span>'+
+      '<div class="trend-track"><div class="trend-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'+
+      '<span class="trend-val" style="color:'+col+'">'+sc+'</span>'+
+      (delta!=null?'<span class="trend-delta" style="color:'+dc+'">'+ds2+'</span>':'<span class="trend-delta"></span>')+
+    '</div>';
+  }).join('');
+
+  // 연도 탭
+  var yrTabsHtml=allYrs.map(function(x){
+    var isCur=(x===r),yrIdx=D.indexOf(x);
+    return '<button class="yr-tab'+(isCur?' on':'')+'" onclick="showCompany('+yrIdx+')">'+x[F.yr]+'년<br><small style="font-weight:600;opacity:.85">'+fmtP(x[F.cons])+'점 · '+x[F.risk]+'</small></button>';
+  }).join('');
+
+  // ─ 사용자 친화 설명 (정확한 분석 의도 반영)
+  function l1Desc(sc){
+    if(sc==null)return'—';
+    // L1 = 사업보고서 텍스트를 세 가지 분석법으로 측정한 신호 강도
+    if(sc>=70)return'키워드 밀도·문맥 분석·의미 분석 세 방법 모두에서 ESG 관련 서술 신호가 강하게 나타났습니다';
+    if(sc>=50)return'세 가지 텍스트 분석 결과, ESG 서술 신호가 업계 평균 수준으로 측정됩니다';
+    return'키워드 밀도·문맥·의미 분석에서 ESG 관련 서술 신호가 낮게 나타났습니다';
+  }
+  function l2Desc(sc){
+    if(sc==null)return'CAPEX 데이터가 없어 직접 투자 측정이 어렵습니다';
+    if(sc>=70)return'실제 환경 투자(CAPEX)가 업종 평균보다 활발합니다';
+    if(sc>=50)return'실제 환경 투자(CAPEX)가 업종 평균 수준입니다';
+    return'실제 환경 투자(CAPEX)가 업종 평균보다 적습니다';
+  }
+  function l3Desc(sc,grade){
+    var g=grade||'—';
+    if(sc>=70)return'외부 ESG 전문기관(KCGS)이 '+g+'등급으로 높게 평가했습니다';
+    if(sc>=50)return'외부 ESG 전문기관(KCGS)의 평가가 '+g+'등급으로 평균 수준입니다';
+    return'외부 ESG 전문기관(KCGS)의 평가가 '+g+'등급으로 낮습니다';
+  }
+  var riskShort={H:'신중 판단 필요',M:'추가 확인 권장',L:'비교적 신뢰 가능'};
+  var riskEmoji={H:'⚠️',M:'△',L:'✓'};
+  var riskMsg={
+    H:'기업이 ESG를 적극 내세우지만 실제 투자·외부 평가와 상당한 차이가 있습니다. 말뿐인 ESG일 가능성이 있으니 신중하게 판단하세요.',
+    M:'ESG 신호 일부가 서로 어긋납니다. 한 지표만 보지 말고 다른 정보도 함께 확인하세요.',
+    L:'기업의 ESG 서술·실제 투자·외부 평가가 대체로 같은 방향입니다. 비교적 신뢰할 수 있습니다.'
+  };
+  function consDesc(c){
+    if(c>=75)return'세 신호가 매우 일관됩니다';
+    if(c>=60)return'대체로 일관된 신호를 보입니다';
+    if(c>=45)return'신호 간 일부 불일치 있음';
+    if(c>=30)return'신호 간 상당한 괴리 있음';
+    return'신호 간 큰 불일치 있음';
+  }
+  function dirChip(d,lbl){
+    if(d==null||d==='—')return'';
+    var cls=d==='+'?'dir-up':d==='-'?'dir-dn':'dir-nt';
+    return'<span class="dir-chip '+cls+'">'+lbl+' '+(d==='+'?'↑':d==='-'?'↓':'→')+'</span>';
+  }
+
+  // ─ Gauge
+  var R2=38,circ=2*Math.PI*R2;
+  var dash=((cons||0)/100*circ).toFixed(1)+' '+circ.toFixed(1);
+
+  // ─ 기술 설명 (개선)
+  function zLabel(z){return z==null?'데이터 없음':z>0.3?'업계 평균 이상':z<-0.3?'업계 평균 이하':'업계 평균 수준';}
+  function zCls(z){return z==null?'neu':z>0?'pos':'neg';}
+  var formula=isNC?'0.575 × L1 − 0.425 × L3  (CAPEX 없음 기업)':isFin?'0.60 × L1 − 0.20 × L2 − 0.20 × L3  (금융 기업)':'0.35 × L1 − 0.45 × L2 − 0.20 × L3  (비금융 기업)';
+  var formulaWhy=isNC?'CAPEX 데이터가 없어 L2를 제외하고, L1·L3 가중치를 재조정했습니다.':isFin?'금융사는 업종 특성상 CAPEX 비교가 제한적이므로 L1에 높은 가중치를 부여했습니다.':'CAPEX 투자 신호(L2)에 가장 높은 가중치를 부여해 실제 행동을 중점 반영했습니다.';
+
+  el.innerHTML=
+  '<div class="co-card-inner">'+
+
+  // ── 헤더
+  '<div class="co-header">'+
+    '<div class="co-top">'+
+      '<div>'+
+        '<div class="co-name">'+r[F.name]+'</div>'+
+        '<div class="co-meta">'+r[F.yr]+'년 기준 · '+r[F.ind]+' · '+(isFin?'금융':'비금융')+(isNC?' · CAPEX없음':'')+'</div>'+
+      '</div>'+
+      '<span class="risk-badge '+rBC[risk]+'">'+riskEmoji[risk]+' '+riskShort[risk]+'</span>'+
+    '</div>'+
+    '<div class="co-score-row">'+
+      '<div class="score-chip">신호일관성 <b>'+fmtP(cons)+'/100</b></div>'+
+      '<div class="score-chip">KCGS <b>'+(r[F.kcgs]||'—')+'</b></div>'+
+      '<div class="score-chip">L1 텍스트 <b>'+fmt(l1)+'</b><span>z</span></div>'+
+      '<div class="score-chip">L2 행동 <b>'+fmt(l2)+'</b><span>z</span></div>'+
+      '<div class="score-chip">L3 평가 <b>'+fmt(l3)+'</b><span>z</span></div>'+
+    '</div>'+
+  '</div>'+
+
+  // ── 연도별 추세 (다년도일 때만)
+  (allYrs.length>1?
+    '<div style="padding:20px 28px 0">'+
+    '<div class="trend-section">'+
+      '<div class="trend-header">'+
+        '<span class="trend-title">연도별 ESG 신호 일관성 추세</span>'+
+        '<span class="trend-verdict" style="color:'+trend.color+'">'+trend.icon+' '+trend.label+'</span>'+
+      '</div>'+
+      trendRows+
+      '<div class="reliability-box"><b>종합 신뢰성 판단:</b> '+reliMsg+'</div>'+
+    '</div>'+
+    '</div>'
+  :'')+
+
+  // ── 연도 탭 (다년도일 때만)
+  (allYrs.length>1?
+    '<div class="yr-tabs-wrap">'+
+      '<div class="yr-tabs-label">연도 선택하여 상세 보기</div>'+
+      '<div class="yr-tabs">'+yrTabsHtml+'</div>'+
+      '<div class="yr-tab-info">탭을 클릭하면 해당 연도의 분석 결과로 전환됩니다</div>'+
+    '</div>'
+  :'')+
+
+  // ── 종합 판정 (gauge)
+  '<div class="co-body">'+
+  (isNC?'<div class="nocapex-notice">⚠ CAPEX 데이터 없음 — 행동 신호는 업종 환경 집약도(E_industry_z)만으로 부분 추정했습니다</div>':'')+
+  '<div class="gauge-wrap">'+
+    '<div class="gauge-circle">'+
+      '<svg width="90" height="90" viewBox="0 0 90 90">'+
+        '<circle cx="45" cy="45" r="'+R2+'" fill="none" stroke="#EEF1FB" stroke-width="9"/>'+
+        '<circle cx="45" cy="45" r="'+R2+'" fill="none" stroke="'+gc+'" stroke-width="9" stroke-dasharray="'+dash+'" stroke-linecap="round"/>'+
+      '</svg>'+
+      '<div class="gauge-val" style="color:'+gc+'">'+fmtP(cons)+'</div>'+
+    '</div>'+
+    '<div class="gauge-text">'+
+      '<div class="gauge-title">ESG SIGNAL CONSISTENCY SCORE</div>'+
+      '<div class="gauge-desc" style="color:'+gc+'">'+rL[risk]+' — '+consDesc(cons)+'</div>'+
+      '<div class="gauge-sub" style="margin-top:8px">'+riskMsg[risk]+'</div>'+
+    '</div>'+
+  '</div>'+
+
+  // ── 3-Layer 카드 (이전 디자인 복원)
+  '<div class="co-section-h">세 가지 신호로 본 기업 ESG</div>'+
+  '<div class="co-layers">'+
+    // L1
+    '<div class="co-layer cl1">'+
+      '<div class="co-layer-num">LAYER 1 · 서술 신호</div>'+
+      '<div class="co-layer-nm">📄 기업이 한 말</div>'+
+      '<div class="co-layer-sc">'+fmtP(ss)+'<small style="font-size:.85rem">/100</small></div>'+
+      '<div class="co-layer-detail">'+l1Desc(ss)+'<br><br>'+
+        '<small>Seed(키워드) '+fmt(seed,2)+'&nbsp;·&nbsp;Content(주제) '+fmt(cont,2)+'&nbsp;·&nbsp;Semantic(의미) '+fmt(sem,2)+'</small>'+
+      '</div>'+
+    '</div>'+
+    // L2
+    '<div class="co-layer cl2">'+
+      '<div class="co-layer-num">LAYER 2 · 행동 신호</div>'+
+      '<div class="co-layer-nm">🏗️ 기업이 한 행동</div>'+
+      '<div class="co-layer-sc">'+(as_!=null?fmtP(as_)+'<small style="font-size:.85rem">/100</small>':'<span style="font-size:1rem;color:var(--muted)">측정불가</span>')+'</div>'+
+      '<div class="co-layer-detail">'+l2Desc(as_)+'<br><br>'+
+        '<small>'+(isNC?'E_industry_z만 적용 (CAPEX 없음)':isFin?'금융 공식 적용':'CAPEX + 업종 환경집약도')+'</small>'+
+      '</div>'+
+    '</div>'+
+    // L3
+    '<div class="co-layer cl3">'+
+      '<div class="co-layer-num">LAYER 3 · 검증 신호</div>'+
+      '<div class="co-layer-nm">⭐ 외부에서 받은 평가</div>'+
+      '<div class="co-layer-sc">'+fmtP(ns)+'<small style="font-size:.85rem">/100</small></div>'+
+      '<div class="co-layer-detail">'+l3Desc(ns,r[F.kcgs])+'<br><br>'+
+        '<small>KCGS 등급 '+(r[F.kcgs]||'—')+' → z-score 역전 적용</small>'+
+      '</div>'+
+    '</div>'+
+  '</div>'+
+
+  // ── 신호 방향
+  '<div class="co-section-h">신호 방향 요약</div>'+
+  '<div class="dir-row">'+dirChip(ds,'📄 서술')+dirChip(da,'🏗️ 투자')+dirChip(dn,'⭐ 평가')+'</div>'+
+
+  // ── 점수 분포 바
+  '<div class="co-section-h">Layer 점수 분포</div>'+
+  [['📄 서술 신호 (L1)',ss,'#2F4BF0'],['🏗️ 행동 신호 (L2)',as_,'#0E9F6E'],['⭐ 검증 신호 (L3)',ns,'#C9810D']].map(function(b){
+    return'<div class="bar-wrap"><div class="bar-label"><span>'+b[0]+'</span><span>'+(b[1]!=null?fmtP(b[1])+'/100':'CAPEX없음')+'</span></div>'+
+      '<div class="bar-track"><div class="bar-fill" style="width:'+(b[1]!=null?Math.max(0,fmtP(b[1])):0)+'%;background:'+b[2]+'"></div></div></div>';
+  }).join('')+
+
+  // ── 기술 상세 토글 (개선)
+  '<div class="tech-toggle">'+
+    '<button class="tech-toggle-btn" onclick="toggleTech(this)">'+
+      '<span>🔧 이 점수는 어떻게 계산되었나요?</span>'+
+      '<em class="tech-arrow">▾</em>'+
+    '</button>'+
+    '<div class="tech-body">'+
+
+      // 블록 1: 측정 방법
+      '<div class="tech-block">'+
+        '<div class="tech-block-title">세 가지 신호 측정 방법</div>'+
+        '<div class="tech-row">'+
+          '<span class="tech-term">📄 서술 신호 (L1)</span>'+
+          '<div class="tech-explain">'+
+            '사업보고서 전체를 세 가지 방법으로 분석합니다.<br>'+
+            '① Seed(40%): ESG 핵심 키워드 빈도 밀도<br>'+
+            '② Content(30%): TF-IDF + SVD로 주제 구조 분석<br>'+
+            '③ Semantic(30%): KoSimCSE 문장 임베딩 의미 유사도<br>'+
+            '<small style="color:var(--muted)">현재값: Seed='+fmt(seed,3)+' · Content='+fmt(cont,3)+' · Semantic='+fmt(sem,3)+'</small>'+
+          '</div>'+
+          '<span class="tech-num '+zCls(l1)+'">z='+fmt(l1,3)+'</span>'+
+        '</div>'+
+        '<div class="tech-row">'+
+          '<span class="tech-term">🏗️ 행동 신호 (L2)</span>'+
+          '<div class="tech-explain">'+
+            '실제 환경 투자 강도를 측정합니다.<br>'+
+            (isNC?'CAPEX 없음 → 업종 환경 집약도(E_industry_z)만 사용':isFin?'금융사 → E_industry_z만 적용 (CAPEX 구조 다름)':'CAPEX 투자 강도(capex_intensity_log_z)와 업종 환경 집약도의 평균')+
+            '<br><small style="color:var(--muted)">높을수록 실제 환경 투자가 많음 → 신호 일치에 유리</small>'+
+          '</div>'+
+          '<span class="tech-num '+zCls(l2)+'">z='+fmt(l2,3)+'</span>'+
+        '</div>'+
+        '<div class="tech-row">'+
+          '<span class="tech-term">⭐ 검증 신호 (L3)</span>'+
+          '<div class="tech-explain">'+
+            'KCGS(한국기업지배구조원) ESG 등급을 역방향으로 변환합니다.<br>'+
+            '등급이 높을수록(A+) 신호 불일치 위험이 낮아집니다.<br>'+
+            '<small style="color:var(--muted)">현재 등급: '+(r[F.kcgs]||'—')+' (A+=최고 / D=최저)</small>'+
+          '</div>'+
+          '<span class="tech-num '+zCls(l3)+'">z='+fmt(l3,3)+'</span>'+
+        '</div>'+
+      '</div>'+
+
+      // 블록 2: 가중치 공식
+      '<div class="tech-block">'+
+        '<div class="tech-block-title">적용 공식 · 가중치</div>'+
+        '<div class="formula-display">'+
+          '<span class="f-label">Signal Mismatch Score =</span>'+
+          '<span class="f-line">'+formula+'</span>'+
+          '<br><small class="f-sub">※ '+formulaWhy+'</small>'+
+        '</div>'+
+        '<div class="tech-note">'+
+          '점수가 <b>클수록</b> 텍스트 신호에 비해 행동·평가가 따라오지 않는다는 의미입니다. '+
+          '이를 0~100 척도로 뒤집어 <b>신호일관성 점수</b>로 표현합니다 — 높을수록 신뢰도가 높습니다.'+
+        '</div>'+
+      '</div>'+
+
+      // 블록 3: 기준값
+      '<div class="tech-block">'+
+        '<div class="tech-block-title">위험 기준값 (전체 368개 기업 기준)</div>'+
+        '<div class="tech-row"><span class="tech-term">High Risk 기준</span><div class="tech-explain">상위 20% — 신호 불일치가 가장 심한 구간</div><span class="tech-num neg">상위 20%</span></div>'+
+        '<div class="tech-row"><span class="tech-term">Medium Risk 기준</span><div class="tech-explain">20~50% — 불일치가 일부 감지되는 구간</div><span class="tech-num" style="color:#C9810D">20~50%</span></div>'+
+        '<div class="tech-row"><span class="tech-term">Low Risk 기준</span><div class="tech-explain">하위 50% — 신호 일관성이 높은 구간</div><span class="tech-num pos">하위 50%</span></div>'+
+        '<div class="tech-row"><span class="tech-term">이 기업 위치</span><div class="tech-explain">'+r[F.name]+' '+r[F.yr]+'년 기준</div><span class="tech-num '+zCls(l1)+'">'+rL[risk]+'</span></div>'+
+      '</div>'+
+
+    '</div>'+  // tech-body
+  '</div>'+   // tech-toggle
+
+  '</div>'+   // co-body
+
+  // ── 액션 버튼
+  '<div class="co-actions">'+
+    '<button class="co-action-btn btn-map" onclick="goToMap('+idx+')">📍 이 기업을 Signal Map에서 확인하기 →</button>'+
+    '<button class="co-action-btn btn-reset" onclick="resetDiag()">← 다른 기업 진단하기</button>'+
+  '</div>'+
+
+  '</div>';  // co-card-inner
+
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function toggleTech(btn){
+  var body=btn.nextElementSibling;
+  var open=body.classList.toggle('open');
+  btn.querySelector('.tech-arrow').style.transform=open?'rotate(180deg)':'';
+}
+
+
+
+function goToMap(idx){
+  go('map');initMapOnce();
+  setTimeout(function(){
+    selectMapCo(idx);
+    var r=D[idx];
+    document.getElementById('mapSearch').value=r[F.name];
+  },100);
+}
+function resetDiag(){
+  document.getElementById('coCard').style.display='none';
+  document.getElementById('diagSearch').value='';
+  document.getElementById('diagSearch').focus();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── SCREENER ──
+var _sf='all',_sp=0,PER=20;
+function getFiltered(){
+  if(_sf==='nonfin')return D.filter(function(r){return r[F.fin]===0;});
+  if(_sf==='fin')return D.filter(function(r){return r[F.fin]===1;});
+  if(_sf==='hrisk')return D.filter(function(r){return r[F.risk]==='H';});
+  if(_sf==='nocap')return D.filter(function(r){return r[F.cap]===0;});
+  return D;
+}
+function setFilter(f,btn){
+  _sf=f;_sp=0;
+  document.querySelectorAll('.scr-filter').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');renderScr(false);
+}
+function loadMore(){_sp++;renderScr(true);}
+function renderScr(append){
+  var data=getFiltered(),end=(_sp+1)*PER;
+  var slice=append?data.slice(_sp*PER,end):data.slice(0,PER);
+  document.getElementById('scrCount').textContent=data.length+'개';
+  var tbody=document.getElementById('scrBody');
+  if(!append)tbody.innerHTML='';
+  slice.forEach(function(r){
+    var isNC=r[F.cap]===0,isFin=r[F.fin]===1,idx=D.indexOf(r),rc=rC[r[F.risk]];
+    var tr=document.createElement('tr');if(isNC)tr.className='no-capex-row';
+    tr.innerHTML='<td><a class="scr-link" onclick="scrGo('+idx+')">'+r[F.name]+'</a></td>'+
+      '<td style="color:var(--gray2);font-size:.8rem">'+r[F.ind]+'</td>'+
+      '<td style="font-weight:600">'+r[F.yr]+'</td>'+
+      '<td style="font-size:.8rem">'+(isFin?'금융':'비금융')+(isNC?' <span style="color:#C9810D;font-size:.73rem">CAPEX없음</span>':'')+'</td>'+
+      '<td style="font-weight:800;color:'+rc+'">'+fmtP(r[F.cons])+'</td>'+
+      '<td>'+fmt(r[F.l1])+'</td>'+
+      '<td>'+(r[F.l2]!=null?fmt(r[F.l2]):'—')+'</td>'+
+      '<td>'+fmt(r[F.l3])+'</td>'+
+      '<td style="font-weight:700">'+(r[F.kcgs]||'—')+'</td>'+
+      '<td><span class="risk-badge '+rBC[r[F.risk]]+'" style="font-size:.74rem;padding:4px 10px">'+r[F.risk]+'</span></td>';
+    tbody.appendChild(tr);
+  });
+  document.getElementById('scrMore').style.display=(end<data.length)?'block':'none';
+}
+function scrGo(idx){
+  go('diag');
+  document.getElementById('diagSearch').value=D[idx][F.name];
+  showCompany(idx);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── MAP ──
+var L2MIN=-2.461,L2MAX=2.625,L1MIN=-1.242,L1MAX=1.055;
+var MX1=90,MX2=610,MY1=30,MY2=440;
+function toMX(l2){return MX1+(l2-L2MIN)/(L2MAX-L2MIN)*(MX2-MX1);}
+function toMY(l1){return MY2-(l1-L1MIN)/(L1MAX-L1MIN)*(MY2-MY1);}
+var mapInited=false,mapSel=-1,mapMode='all';
+
+function initMapOnce(){
+  if(mapInited)return;mapInited=true;
+  var g=document.getElementById('mapDots');
+  D.forEach(function(r,idx){
+    var cx=toMX(r[F.l2]),cy=toMY(r[F.l1]);
+    var isNC=r[F.cap]===0,col=rC[r[F.risk]];
+    var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',cx.toFixed(1));c.setAttribute('cy',cy.toFixed(1));
+    c.setAttribute('r','5.5');c.setAttribute('fill',col);c.setAttribute('opacity','0.6');
+    if(isNC){c.setAttribute('stroke',col);c.setAttribute('stroke-width','1.5');c.setAttribute('fill-opacity','0.25');}
+    c.dataset.idx=idx;c.classList.add('map-dot');
+    c.addEventListener('click',function(e){selectMapCo(parseInt(e.currentTarget.dataset.idx));});
+    c.addEventListener('mouseenter',showMapTip);
+    c.addEventListener('mouseleave',hideMapTip);
+    g.appendChild(c);
+  });
+}
+function selectMapCo(idx){
+  mapSel=idx;
+  document.getElementById('mapSearch').value=D[idx][F.name];
+  updateMapDisplay();updateMapInfo();
+}
+function setMapMode(mode,btn){
+  mapMode=mode;
+  document.querySelectorAll('.map-mode-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');updateMapDisplay();
+}
+function updateMapDisplay(){
+  var selR=mapSel>=0?D[mapSel]:null,selInd=selR?selR[F.ind]:null;
+  document.querySelectorAll('.map-dot').forEach(function(dot){
+    var idx=parseInt(dot.dataset.idx),r=D[idx];
+    var isSel=idx===mapSel,sameInd=selInd&&r[F.ind]===selInd;
+    var col=rC[r[F.risk]],isNC=r[F.cap]===0;
+    if(isSel){
+      dot.setAttribute('r','12');dot.setAttribute('opacity','1');dot.setAttribute('fill',col);
+      dot.setAttribute('stroke','#fff');dot.setAttribute('stroke-width','2.5');dot.setAttribute('fill-opacity','1');
+    } else if(mapMode==='industry'&&selR&&!sameInd){
+      dot.setAttribute('r','4');dot.setAttribute('opacity','0.1');
+      dot.setAttribute('fill','#C9D6FB');dot.removeAttribute('stroke');dot.setAttribute('fill-opacity','1');
+    } else {
+      dot.setAttribute('r','5.5');dot.setAttribute('opacity','0.6');dot.setAttribute('fill',col);
+      if(isNC){dot.setAttribute('stroke',col);dot.setAttribute('stroke-width','1.5');dot.setAttribute('fill-opacity','0.25');}
+      else{dot.removeAttribute('stroke');dot.setAttribute('fill-opacity','1');}
+    }
+  });
+  var labG=document.getElementById('mapLabels');labG.innerHTML='';
+  if(!selR)return;
+  var cx=toMX(selR[F.l2]),cy=toMY(selR[F.l1]);
+  var lx=cx+14>580?cx-14:cx+14,ly=cy-10<35?cy+18:cy-8;
+  var txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+  txt.setAttribute('x',lx);txt.setAttribute('y',ly);txt.setAttribute('font-size','12.5');
+  txt.setAttribute('font-weight','800');txt.setAttribute('fill',rC[selR[F.risk]]);txt.setAttribute('pointer-events','none');
+  txt.textContent=selR[F.name]+' '+selR[F.yr];labG.appendChild(txt);
+  if(mapMode==='industry'&&selInd){
+    var same=D.filter(function(r){return r[F.ind]===selInd;});
+    var aL1=same.reduce(function(s,r){return s+r[F.l1];},0)/same.length;
+    var aL2=same.reduce(function(s,r){return s+r[F.l2];},0)/same.length;
+    var ax=toMX(aL2),ay=toMY(aL1);
+    var ac=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    ac.setAttribute('cx',ax.toFixed(1));ac.setAttribute('cy',ay.toFixed(1));
+    ac.setAttribute('r','10');ac.setAttribute('fill','none');
+    ac.setAttribute('stroke','#2F4BF0');ac.setAttribute('stroke-width','2');
+    ac.setAttribute('stroke-dasharray','5,3');ac.setAttribute('pointer-events','none');labG.appendChild(ac);
+    var at=document.createElementNS('http://www.w3.org/2000/svg','text');
+    var alx=ax+13>570?ax-70:ax+13;
+    at.setAttribute('x',alx);at.setAttribute('y',ay+5);at.setAttribute('font-size','11');
+    at.setAttribute('fill','#2F4BF0');at.setAttribute('font-weight','700');at.setAttribute('pointer-events','none');
+    at.textContent=selInd+' 평균('+same.length+'개)';labG.appendChild(at);
+  }
+}
+function updateMapInfo(){
+  var el=document.getElementById('mapInfo');
+  if(mapSel<0){el.innerHTML='← 기업을 검색하거나 점을 클릭하면 해당 기업 위치가 강조됩니다';return;}
+  var r=D[mapSel],gc=rC[r[F.risk]];
+  el.innerHTML='선택: <strong>'+r[F.name]+'</strong> '+r[F.yr]+' · '+r[F.ind]+' · 신호점수 <strong style="color:'+gc+'">'+fmtP(r[F.cons])+'/100</strong> · <span style="color:'+gc+'">'+rL[r[F.risk]]+'</span>';
+}
+function showMapTip(e){
+  var idx=parseInt(e.currentTarget.dataset.idx),r=D[idx],gc=rC[r[F.risk]];
+  var tip=document.getElementById('mapTooltip');
+  tip.innerHTML='<b>'+r[F.name]+'</b><div class="tip-row">'+r[F.yr]+' · '+r[F.ind]+'</div><div class="tip-row">KCGS '+(r[F.kcgs]||'—')+' · <span style="color:'+gc+'">'+rL[r[F.risk]]+'</span></div><div class="tip-row">신호점수 <strong style="color:'+gc+'">'+fmtP(r[F.cons])+'/100</strong></div>';
+  tip.style.display='block';
+}
+function hideMapTip(){document.getElementById('mapTooltip').style.display='none';}
+document.getElementById('scatterWrap').addEventListener('mousemove',function(e){
+  var tip=document.getElementById('mapTooltip');if(tip.style.display==='none')return;
+  var rect=document.getElementById('scatterWrap').getBoundingClientRect();
+  var tx=e.clientX-rect.left+16,ty=e.clientY-rect.top-12;
+  if(tx+200>rect.width)tx=e.clientX-rect.left-216;
+  if(ty+100>rect.height)ty=e.clientY-rect.top-95;
+  tip.style.left=tx+'px';tip.style.top=ty+'px';
+});
+var _mt=null;
+function mapSuggest(){
+  clearTimeout(_mt);
+  _mt=setTimeout(function(){
+    var q=document.getElementById('mapSearch').value.trim();
+    var sug=document.getElementById('mapSuggest');
+    if(!q){sug.style.display='none';return;}
+    var m=D.filter(function(r){return r[F.name].indexOf(q)>=0;}).slice(0,8);
+    if(!m.length){sug.style.display='none';return;}
+    sug.innerHTML=m.map(function(r){
+      var idx=D.indexOf(r);
+      return '<div class="map-sug-item" onclick="selectMapCo('+idx+');closeMapSug()">'+r[F.name]+'<span>'+r[F.yr]+' · '+r[F.ind]+'</span></div>';
+    }).join('');
+    sug.style.display='block';
+  },110);
+}
+function closeMapSug(){document.getElementById('mapSuggest').style.display='none';}
+function mapDoSearch(){
+  closeMapSug();
+  var q=document.getElementById('mapSearch').value.trim();if(!q)return;
+  var m=D.filter(function(r){return r[F.name].indexOf(q)>=0;});
+  m.sort(function(a,b){return b[F.yr]-a[F.yr];});
+  if(!m.length){alert('"'+q+'" 검색 결과 없음');return;}
+  selectMapCo(D.indexOf(m[0]));
+}
+document.addEventListener('click',function(e){
+  var mw=document.querySelector('.map-search-wrap');
+  if(mw&&!mw.contains(e.target))closeMapSug();
+});
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('cntAll').textContent=D.length;
+  document.getElementById('cntNF').textContent=D.filter(function(r){return r[F.fin]===0;}).length;
+  document.getElementById('cntF').textContent=D.filter(function(r){return r[F.fin]===1;}).length;
+  document.getElementById('cntH').textContent=D.filter(function(r){return r[F.risk]==='H';}).length;
+  document.getElementById('cntNC').textContent=D.filter(function(r){return r[F.cap]===0;}).length;
+  renderScr(false);
+});
+</script>
+</body>
+</html>
